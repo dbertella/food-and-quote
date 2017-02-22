@@ -17,7 +17,7 @@ class App extends Component {
       .then(res => {
         console.log(res)
       });
-    fetch(`${BASE_URL}tags`)
+    fetch(`${BASE_URL}tags?per_page=100`)
       .then(r => r.json())
       .then(res => {
         this.fetchPosts(res[0].id);
@@ -43,18 +43,20 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Food and Quote</h2>
+          <h1>Food and Quote</h1>
         </div>
         {
           this.state.tags.map((t, i) => (
-            <button key={i} onClick={() => this.fetchPosts(t.id)}>{t.slug}</button>
+            <button key={i} onClick={() => this.fetchPosts(t.id)}>
+              {t.slug}
+            </button>
           ))
         }
-        <div>
+        <div className="container">
           {
             this.state.posts.map((p, i) => (
               <div key={i}>
-                <h3 dangerouslySetInnerHTML={this.createMarkup(p.title.rendered)} />
+                <h2 dangerouslySetInnerHTML={this.createMarkup(p.title.rendered)} />
                 <img src={p.featured_media_url} />
                 <div dangerouslySetInnerHTML={this.createMarkup(p.content.rendered)} />
               </div>
