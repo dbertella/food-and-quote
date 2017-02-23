@@ -6,25 +6,17 @@ const BASE_URL = 'https://public-api.wordpress.com/wp/v2/sites/foodandquote.com/
 const styles = {
   item: {
     padding: '4px 6px',
+    fontSize: '1.5em',
     cursor: 'default',
   },
 
   highlightedItem: {
     color: 'white',
     background: 'hsl(200, 50%, 50%)',
+    fontSize: '1.5em',
     padding: '2px 6px',
     cursor: 'default'
   },
-  menu: {
-    borderRadius: '3px',
-    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-    background: 'rgba(255, 255, 255, 0.9)',
-    padding: '2px 0',
-    fontSize: '90%',
-    position: 'fixed',
-    overflow: 'auto',
-    maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
-  }
 }
 class App extends Component {
   constructor(props) {
@@ -82,7 +74,6 @@ class App extends Component {
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Autocomplete
             menuStyles={styles.menu}
-            className="pippo"
             inputProps={{name: "tags", id: "tags-autocomplete"}}
             ref="autocomplete"
             value={this.state.value}
@@ -90,7 +81,7 @@ class App extends Component {
             getItemValue={(item) => item.name}
             onSelect={(value, item) => {
               // set the menu to only the selected item
-              // this.setState({ value, tags: [ item ] })
+              this.setState({ value, tags: [ item ] })
               this.fetchPosts(item.id)
               // or you could reset it to a default list again
               // this.setState({ unitedStates: getStates() })
