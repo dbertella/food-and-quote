@@ -25,21 +25,22 @@ img {
   max-width: 100%;
   height: auto;
 }
-
-button {
-  font-size: 17px;
-  margin: 2px;
-  border: 1px solid #333;
-  background: transparent;
-  color: #333;
+.Select-control {
+  border-radius: 0;
 }
-button:hover {
-  background: #f3f3f3;
+.pad-1 {
+  padding: 1em 0;
 }
-
-input {
+.cards {
+  display: flex;
+  align-items: flex-end;
+  min-height: 230px;
+  text-decoration: none;
+  background-size: cover;
+}
+.title {
   width: 100%;
-  height: 50px;
-  font-size: 2em;
-  border: 2px solid #333;
+  padding: 0.5em;
+  color: #fff;
+  background: rgba(0,0,0, 0.3);
 }
