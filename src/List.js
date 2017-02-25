@@ -16,7 +16,16 @@ class App extends Component {
       value: [],
     };
   }
-
+  componentDidMount() {
+    const posts = localStorage.getItem('posts');
+    const value = localStorage.getItem('value');
+    if (posts) {
+      this.setState({
+        posts: JSON.parse(posts),
+        value: JSON.parse(value),
+      })
+    }
+  }
   componentWillUpdate(nextProps, nextState) {
     const { value } = nextState;
     if (value.length > 0 && value.length !== this.state.value.length) {
@@ -28,6 +37,7 @@ class App extends Component {
 		this.setState({
 			value: value,
 		});
+    localStorage.setItem('value', JSON.stringify(value));
 	};
 
   fetchTags = (input) => {
@@ -70,10 +80,11 @@ class App extends Component {
     fetch(`${BASE_URL}posts?per_page=100&tags=${tags}`)
       .then(r => r.json())
       .then(res => {
-        console.log(res)
+        const sorted = this.sortPosts(res);
         this.setState({
-          posts: this.sortPosts(res)
+          posts: sorted,
         });
+        localStorage.setItem('posts', JSON.stringify(sorted));
       });
   };
   

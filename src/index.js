@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { run } from '@cycle/xstream-run';
 import { createCycleMiddleware } from 'redux-cycles';
 
-// import {makeHTTPDriver} from '@cycle/http';
+import { makeHTTPDriver } from '@cycle/http';
 // import {timeDriver} from '@cycle/time';
 import rootReducer, { main } from './reducer';
 import App from './App';
@@ -25,7 +25,8 @@ const store = createStore(
 );
 
 run(main, {
-  ACTION: makeActionDriver()
+  ACTION: makeActionDriver(),
+  HTTP: makeHTTPDriver(),
 })
 
 ReactDOM.render(
