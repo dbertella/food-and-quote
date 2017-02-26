@@ -13,8 +13,8 @@ const App = () => (
       <h1>Food and Quote</h1>
     </div>
     <div>
-      <Route exact path="/food-and-quote" component={List}/>
-      <Route path="/food-and-quote/:id" component={Page}/>
+      <Route exact path="/" component={List}/>
+      <Route path="/:id" component={Page}/>
     </div>
   </div>
 );

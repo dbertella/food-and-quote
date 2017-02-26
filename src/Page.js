@@ -19,13 +19,13 @@ class Page extends Component {
       return <div>Loading...</div>
     }
     return (
-      <div>
+      <div className="container">
         {
           post.title &&
             <div>
               <button onClick={this.props.goBack}>Back</button>
               <h2 dangerouslySetInnerHTML={createMarkup(post.title.rendered)} />
-              <img src={post.featured_media_url} alt={post.title.rendered} />
+              <img src={`${post.featured_media_url}?w=640&h=360&crop=1`} alt={post.title.rendered} />
               <div dangerouslySetInnerHTML={createMarkup(post.content.rendered)} />
             </div>
         }

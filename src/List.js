@@ -80,9 +80,9 @@ class App extends Component {
               ? posts.map((p, i) => (
                   <h2 key={i}>
                     <Link
-                      to={`/food-and-quote/${p.id}`}
+                      to={`/${p.id}`}
                       className="cards"
-                      style={{ backgroundImage: `url(${p.featured_media_url})`}}
+                      style={{ backgroundImage: `url(${p.featured_media_url}?w=640&h=640&crop=1)`}}
                     >
                       <span className="title" dangerouslySetInnerHTML={createMarkup(p.title.rendered)} />
                     </Link>
