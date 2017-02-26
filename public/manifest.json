@@ -1,0 +1,13 @@
+{
+  "short_name": "food-n-quote",
+  "name": "Food and Quote",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./",
+  "display": "standalone"
+}
