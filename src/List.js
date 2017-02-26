@@ -4,7 +4,6 @@ import {
   Link,
 } from 'react-router-dom';
 import Select from 'react-select';
-import { intersection } from 'lodash';
 import * as actions from './actions';
 
 import { BASE_URL, createMarkup } from './utils';
@@ -15,15 +14,12 @@ class App extends Component {
     super(props);
     this.state = {
       value: [],
-      posts: [],
     };
   }
   componentDidMount() {
-    const posts = localStorage.getItem('posts');
     const value = localStorage.getItem('value');
-    if (posts) {
+    if (value) {
       this.setState({
-        posts: JSON.parse(posts),
         value: JSON.parse(value),
       })
     }
@@ -57,37 +53,6 @@ class App extends Component {
         return {
           options
         };
-      });
-  };
-
-  sortPosts = (posts) => {
-    const { value } = this.state;
-    return posts.slice().sort((a, b) => {
-      var tagALength = intersection(
-        a.tags.map(el => el.toString()),
-        value.map(el => el.value)).length;
-      var tagBLength = intersection(
-        b.tags.map(el => el.toString()),
-        value.map(el => el.value)).length;
-      if (tagALength > tagBLength) {
-        return -1;
-      }
-      if (tagALength < tagBLength) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-
-  fetchPosts = (tags) => {
-    fetch(`${BASE_URL}posts?per_page=100&tags=${tags}`)
-      .then(r => r.json())
-      .then(res => {
-        const sorted = this.sortPosts(res);
-        this.setState({
-          posts: sorted,
-        });
-        localStorage.setItem('posts', JSON.stringify(sorted));
       });
   };
   
