@@ -8,6 +8,6 @@
       "type": "image/png"
     }
   ],
-  "start_url": "./",
-  "display": "standalone"
+  "start_url": "./?utm_source=homescreen",
+  "display": "fullscreen"
 }
