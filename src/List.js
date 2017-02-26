@@ -80,7 +80,7 @@ class App extends Component {
               ? posts.map((p, i) => (
                   <h2 key={i}>
                     <Link
-                      to={`/${p.id}`}
+                      to={`/food-and-quote/${p.id}`}
                       className="cards"
                       style={{ backgroundImage: `url(${p.featured_media_url})`}}
                     >
