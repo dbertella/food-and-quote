@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "flow-bin": "^0.40.0",
     "react-scripts": "0.9.0"
   },
   "dependencies": {
@@ -18,6 +19,7 @@
     "react-select": "^1.0.0-rc.3",
     "redux": "^3.6.0",
     "redux-cycles": "^0.3.0",
+    "styled-components": "^1.4.3",
     "xstream": "^10.2.0"
   },
   "scripts": {

@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   Link,
 } from 'react-router-dom';
 import Select from 'react-select';
 import { intersection } from 'lodash';
-import 'react-select/dist/react-select.css';
+import * as actions from './actions';
 
 import { BASE_URL, createMarkup } from './utils';
+import 'react-select/dist/react-select.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: [],
       value: [],
+      posts: [],
     };
   }
   componentDidMount() {
@@ -28,8 +30,9 @@ class App extends Component {
   }
   componentWillUpdate(nextProps, nextState) {
     const { value } = nextState;
+    const { requestPosts } = this.props;
     if (value.length > 0 && value.length !== this.state.value.length) {
-      this.fetchPosts(encodeURIComponent(value.map(tag => tag.value).join()));
+      requestPosts(value);
     }
   }
 
@@ -91,8 +94,11 @@ class App extends Component {
   render() {
     const {
       value,
-      posts,
     } = this.state;
+    const {
+      posts
+    } = this.props;
+    console.log(posts)
     return (
       <div className="App">
         <Select.Async
@@ -128,4 +134,14 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state, ownProps) => {
+  return ({
+    posts: state.posts.posts,
+    isFetching: state.post.isFetching,
+  })
+};
+
+export default connect(
+  mapStateToProps, {
+  requestPosts: actions.requestPosts,
+})(App);

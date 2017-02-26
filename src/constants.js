@@ -1,0 +1,5 @@
+// @flow
+export const POSTS_REQUESTED = 'POSTS_REQUESTED';
+export const POSTS_RECEIVED = 'POSTS_RECEIVED';
+export const POST_REQUESTED = 'POST_REQUESTED';
+export const POST_RECEIVED = 'POST_RECEIVED';

@@ -1,32 +1,23 @@
 import React, { Component } from 'react';
-
-import { BASE_URL, createMarkup } from './utils';
+import { connect } from 'react-redux';
+import * as actions from './actions';
+import { createMarkup } from './utils';
 
 class Page extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      post: {},
-    };
-  }
-
   componentDidMount() {
-    const { match } = this.props;
-    fetch(`${BASE_URL}posts/${match.params.id}`)
-      .then(r => r.json())
-      .then(res => {
-        console.log(res);
-        this.setState({
-          post: res,
-        });
-      });
+    const { match, requestPostById } = this.props;
+    requestPostById(match.params.id);
   }
 
   render() {
     const {
       post,
-    } = this.state;
-    console.log('------>>>>', post)
+      isFetching,
+    } = this.props;
+    console.log({isFetching})
+    if (isFetching) {
+      return <div>Loading...</div>
+    }
     return (
       <div>
         {
@@ -43,4 +34,17 @@ class Page extends Component {
   }
 }
 
-export default Page;
+const mapStateToProps = (state, ownProps) => {
+  const post = {
+    ...state.post[ownProps.match.params.id]
+  };
+  return ({
+    post,
+    isFetching: state.post.isFetching,
+  })
+};
+
+export default connect(
+  mapStateToProps, {
+  requestPostById: actions.requestPostById,
+})(Page);

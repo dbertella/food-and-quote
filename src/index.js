@@ -7,7 +7,8 @@ import { createCycleMiddleware } from 'redux-cycles';
 
 import { makeHTTPDriver } from '@cycle/http';
 // import {timeDriver} from '@cycle/time';
-import rootReducer, { main } from './reducer';
+import rootReducer from './reducer';
+import main from './cycles';
 import App from './App';
 
 import './index.css';
