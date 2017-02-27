@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { run } from '@cycle/xstream-run';
 import { createCycleMiddleware } from 'redux-cycles';
+import persistState from 'redux-localstorage';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
 
 import { makeHTTPDriver } from '@cycle/http';
 // import {timeDriver} from '@cycle/time';
@@ -20,9 +23,14 @@ import {
 const cycleMiddleware = createCycleMiddleware();
 const { makeActionDriver } = cycleMiddleware;
 
+const enhancer = persistState();
+
 const store = createStore(
   rootReducer,
-  applyMiddleware(cycleMiddleware)
+  composeWithDevTools(
+    applyMiddleware(cycleMiddleware),
+    enhancer
+  )
 );
 
 run(main, {
