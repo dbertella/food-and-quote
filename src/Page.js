@@ -5,8 +5,10 @@ import { createMarkup } from './utils';
 
 class Page extends Component {
   componentDidMount() {
-    const { match, requestPostById } = this.props;
-    requestPostById(match.params.id);
+    const { match, post, requestPostById } = this.props;
+    if (!post.title) {
+      requestPostById(match.params.id);
+    }
   }
 
   render() {

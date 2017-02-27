@@ -37,6 +37,7 @@ img {
   min-height: 230px;
   text-decoration: none;
   background-size: cover;
+  background-position: center center;
 }
 .title {
   width: 100%;

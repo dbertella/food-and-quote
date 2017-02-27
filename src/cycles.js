@@ -16,14 +16,10 @@ const fetchPostById = (sources) => {
       url: `${BASE_URL}posts/${postId}`,
       category: 'post'
     }));
-
-  const response$ = sources.HTTP
+  const action$ = sources.HTTP
     .select('post')
-    .flatten();
-
-  const action$ = xs.combine(post$, response$)
-    .map(arr => actions.receivePostById(arr[0], arr[1].body));
-
+    .flatten()
+    .map(res => actions.receivePostById(res.body.id, res.body));
   return {
     ACTION: action$,
     HTTP: request$
@@ -59,11 +55,11 @@ const fetchPosts = (sources) => {
       url: `${BASE_URL}posts?per_page=100&tags=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
       category: 'posts'
     }))
-  
+
   const response$ = sources.HTTP
     .select('posts')
     .flatten();
-  
+
   const action$ = xs.combine(response$, posts$)
     .map(arr => actions.receivePosts(sortPosts(arr[0].body, arr[1])));
 
@@ -73,4 +69,4 @@ const fetchPosts = (sources) => {
   }
 }
 
-export default combineCycles(fetchPosts, fetchPostById);
+export default combineCycles(fetchPostById, fetchPosts);

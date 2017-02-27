@@ -6,18 +6,20 @@ export const requestPosts = (tags: Array<string>) => ({
   tags,
 });
 
-export const receivePosts = (posts) => ({
+export const receivePosts = (posts: Object) => ({
   type: types.POSTS_RECEIVED,
   posts,
 });
 
-export const requestPostById = (postId) => ({
+export const requestPostById = (postId: number) => ({
   type: types.POST_REQUESTED,
   postId,
 });
 
-export const receivePostById = (postId, post) => ({
+export const receivePostById = (postId: number, post:Object) => {
+  console.log({ postId })
+  return ({
   type: types.POST_RECEIVED,
   postId,
   post,
-});
+})};

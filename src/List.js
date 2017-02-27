@@ -55,7 +55,6 @@ class App extends Component {
         };
       });
   };
-  
   render() {
     const {
       value,
@@ -63,7 +62,6 @@ class App extends Component {
     const {
       posts
     } = this.props;
-    console.log(posts)
     return (
       <div className="App">
         <Select.Async
@@ -76,7 +74,7 @@ class App extends Component {
         />
         <div className="container">
           {
-            posts.length > 0 
+            posts.length > 0
               ? posts.map((p, i) => (
                   <h2 key={i}>
                     <Link
@@ -91,7 +89,6 @@ class App extends Component {
               : <div className="pad-1">
                   What's left in your kitchen?
                 </div>
-            
           }
         </div>
       </div>
