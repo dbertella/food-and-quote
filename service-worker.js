@@ -283,7 +283,8 @@ self.addEventListener('fetch', function(event) {
 
 // Runtime cache configuration, using the sw-toolbox library.
 
-toolbox.router.get(/^https:\/\/public-api\.wordpress\.com\/wp\/v2\/sites\/foodanquote\.com/, toolbox.networkFirst, {});
+toolbox.router.get(/^https:\/\/public-api\.wordpress\.com\/wp\/v2\/sites\/foodanquote\.com\/.*/, toolbox.networkFirst, {});
+toolbox.router.get(/^https:\/\/foodandquote\.files\.wordpress\.com\/.*/, toolbox.fastest, {});
 
 
 
