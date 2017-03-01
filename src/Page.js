@@ -2,10 +2,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from "react-helmet";
+import styled from "styled-components";
 
+import BackButton from './components/BackButton';
+import Loader from './components/Loader';
 import * as actions from './actions';
 import { createMarkup } from './utils';
+import { TEXT_COLOR } from './styles';
 import type { Post } from './types';
+
+const TitleWrap = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const Title = styled.h1`
+  color: ${TEXT_COLOR};
+`;
 
 class Page extends Component {
   props: {
@@ -28,18 +40,14 @@ class Page extends Component {
       isFetching,
       goBack,
     } = this.props;
-    if (isFetching && !!post.title) {
-      return <div>Loading...</div>
+    if (isFetching) {
+      return <Loader />
     }
     return (
       <div className="container">
         <Helmet
-          htmlAttributes={{lang: "en", amp: undefined}} // amp takes no value
           title={post.title ? post.title.rendered : post.slug}
           titleTemplate="Food and quote - %s"
-          defaultTitle="Food and quote"
-          titleAttributes={{itemprop: "name", lang: "en"}}
-          base={{target: "_blank", href: "https://foodandquote.com"}}
           meta={[
               {name: "description", content: "3 ingredient recipes and parenting quotes"},
               {property: "og:type", content: "article"}
@@ -51,8 +59,10 @@ class Page extends Component {
         {
           post.title &&
             <div>
-              <button onClick={goBack}>Back</button>
-              <h2 dangerouslySetInnerHTML={createMarkup(post.title.rendered)} />
+              <TitleWrap>
+                <BackButton onClick={goBack} />
+                <Title dangerouslySetInnerHTML={createMarkup(post.title.rendered)} />
+              </TitleWrap>
               <img src={`${post.featured_media_url}?w=640&h=360&crop=1`} alt={post.title.rendered} />
               <div dangerouslySetInnerHTML={createMarkup(post.content.rendered)} />
             </div>
