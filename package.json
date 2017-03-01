@@ -15,6 +15,7 @@
     "react": "^15.4.2",
     "react-autocomplete": "^1.4.0",
     "react-dom": "^15.4.2",
+    "react-helmet": "^4.0.0",
     "react-redux": "^5.0.3",
     "react-router-dom": "next",
     "react-select": "^1.0.0-rc.3",
@@ -23,11 +24,12 @@
     "redux-devtools-extension": "^2.13.0",
     "redux-localstorage": "^0.4.1",
     "styled-components": "^1.4.3",
+    "sw-precache": "^5.0.0",
     "xstream": "^10.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "npm run build&&gh-pages -d build"
