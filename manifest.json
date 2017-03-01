@@ -10,6 +10,6 @@
   ],
   "start_url": "/food-and-quote/index.html?utm_source=homescreen",
   "display": "standalone",
-  "theme_color": "#a040a0",
-  "background_color": "#EEEEEE"
+  "theme_color": "#373737",
+  "background_color": "#31f6a9"
 }
