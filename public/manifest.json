@@ -3,8 +3,8 @@
   "name": "Food and Quote",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "192x192",
+      "src": "icon.png",
+      "sizes": "114x114",
       "type": "image/png"
     }
   ],

@@ -22,7 +22,7 @@ const App = () => (
         defaultTitle="Food and quote - 3 ingredient recipes app"
         titleAttributes={{itemprop: "name", lang: "en"}}
         meta={[
-            {name: "description", content: "3 ingredient recipes and parenting quotes"},
+            {name: "description", content: "Food and quote is a 3 ingredient recipes food blog with parenting quotes. Find easy recipes for the family and share your experience."},
             {property: "og:type", content: "article"}
         ]}
         link={[
