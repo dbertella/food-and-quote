@@ -4,16 +4,35 @@ import {
   Link,
 } from 'react-router-dom';
 import Select from 'react-select';
+import styled from 'styled-components';
 import * as actions from './actions';
 
 import { BASE_URL, createMarkup } from './utils';
 import 'react-select/dist/react-select.css';
+
+const InitialTag = styled.button`
+  font-size: 1.2em;
+  line-height: 1.4;
+  background-color: #373737;
+  border-radius: 2px;
+  border: 1px solid #373737;
+  color: #fff;
+  cursor: pointer;
+  margin: 15px;
+`;
+const TagWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+  margin-top: 15px;
+`
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: [],
+      homeTags: [],
     };
   }
   componentDidMount() {
@@ -23,6 +42,7 @@ class App extends Component {
         value: JSON.parse(value),
       })
     }
+    this.fetchFirstTenTags();
   }
   componentWillUpdate(nextProps, nextState) {
     const { value } = nextState;
@@ -38,6 +58,23 @@ class App extends Component {
 		});
     localStorage.setItem('value', JSON.stringify(value));
 	};
+  setValue = (value) => {
+    this.setState({
+			value: [
+        ...this.state.value,
+        value,
+      ],
+		});
+    localStorage.setItem('value', JSON.stringify(value));
+  }
+  fetchFirstTenTags = () => 
+    fetch(`${BASE_URL}tags?per_page=7&order=desc&orderby=count`)
+      .then(r => r.json())
+      .then(res => {
+        this.setState({
+          homeTags: res,
+        })
+      });
 
   fetchTags = (input) => {
     if (!input) {
@@ -58,6 +95,7 @@ class App extends Component {
   render() {
     const {
       value,
+      homeTags,
     } = this.state;
     const {
       posts
@@ -75,7 +113,7 @@ class App extends Component {
         />
         <div className="container">
           {
-            posts.length > 0
+            value.length > 0
               ? posts.map((p, i) => (
                   <h2 key={i}>
                     <Link
@@ -89,6 +127,25 @@ class App extends Component {
                 ))
               : <div className="pad-1">
                   What's left in your kitchen?
+                  <TagWrap>
+                    {
+                      homeTags.map(
+                        (tag, i) => 
+                        <InitialTag
+                          key={i}
+                          className="Select-value-label"
+                          onClick={
+                            () => this.setValue({
+                              value: tag.id.toString(),
+                              label: tag.name
+                            })
+                          }
+                        >
+                          {tag.name}
+                        </InitialTag>
+                      )
+                    }
+                  </TagWrap>
                 </div>
           }
         </div>
