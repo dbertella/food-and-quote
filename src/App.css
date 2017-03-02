@@ -27,6 +27,48 @@ img {
 }
 .Select-control {
   border-radius: 0;
+  height: 46px;
+}
+.Select-clear {
+  font-size: 31px;
+}
+.Select-placeholder,
+.Select--single > .Select-control .Select-value {
+  line-height: 44px;
+}
+.Select-input {
+  height: 44px;
+}
+.Select-input > input {
+  line-height: 26px;
+}
+.Select--multi .Select-value {
+  font-size: 1.2em;
+  line-height: 1.4;
+  background-color: #373737;
+  border-radius: 2px;
+  border: 1px solid #373737;
+  color: #fff;
+}
+.Select--multi .Select-value-icon {
+  border-right: rgba(255, 255, 255, 0.12);
+}
+.Select--multi .Select-value-icon:hover, .Select--multi .Select-value-icon:focus {
+    background-color: #ccc;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ccc;
+}
+.is-focused:not(.is-open) > .Select-control {
+  border-color: #373737;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+.Select-option.is-selected {
+  background-color: rgba(55, 55, 55, 0.04);
+  color: #333;
+}
+.Select-option.is-focused {
+  background-color: rgba(55, 55, 55, 0.08);
+  color: #333;
 }
 .pad-1 {
   padding: 1em 0;

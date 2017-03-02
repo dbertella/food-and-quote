@@ -18,8 +18,8 @@ const App = () => (
   <div className="App">
       <Helmet
         htmlAttributes={{lang: "en", amp: undefined}}
-        titleTemplate="Food and quote - %s"
-        defaultTitle="3 ingredient recipes and parenting quotes"
+        titleTemplate="%s | Food and quote"
+        defaultTitle="Food and quote - 3 ingredient recipes app"
         titleAttributes={{itemprop: "name", lang: "en"}}
         meta={[
             {name: "description", content: "3 ingredient recipes and parenting quotes"},

@@ -47,7 +47,6 @@ class Page extends Component {
       <div className="container">
         <Helmet
           title={post.title ? post.title.rendered : post.slug}
-          titleTemplate="Food and quote - %s"
           meta={[
               {name: "description", content: "3 ingredient recipes and parenting quotes"},
               {property: "og:type", content: "article"}
