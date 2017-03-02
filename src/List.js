@@ -65,6 +65,7 @@ class App extends Component {
     return (
       <div className="App">
         <Select.Async
+          autofocus
           multi
           value={value}
           name="form-field-name"

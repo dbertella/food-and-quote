@@ -31,6 +31,7 @@ img {
 }
 .Select-clear {
   font-size: 31px;
+  padding-right: 5px;
 }
 .Select-placeholder,
 .Select--single > .Select-control .Select-value {
@@ -69,6 +70,9 @@ img {
 .Select-option.is-focused {
   background-color: rgba(55, 55, 55, 0.08);
   color: #333;
+}
+.Select-arrow-zone {
+  display: none;
 }
 .pad-1 {
   padding: 1em 0;
