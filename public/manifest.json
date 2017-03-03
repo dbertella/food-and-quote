@@ -1,5 +1,5 @@
 {
-  "short_name": "food-n-quote",
+  "short_name": "Food and Quote",
   "name": "Food and Quote",
   "icons": [
     {
@@ -8,7 +8,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/food-and-quote/index.html?utm_source=homescreen",
+  "start_url": "/food-and-quote/?utm_source=homescreen",
   "display": "standalone",
   "theme_color": "#373737",
   "background_color": "#31f6a9"
