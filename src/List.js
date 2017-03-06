@@ -7,6 +7,7 @@ import Select from 'react-select';
 import styled from 'styled-components';
 import * as actions from './actions';
 
+import Loader from './components/Loader';
 import { BASE_URL, createMarkup } from './utils';
 import 'react-select/dist/react-select.css';
 
@@ -85,9 +86,13 @@ class App extends Component {
       homeTags,
     } = this.state;
     const {
+      isFetching,
       posts,
       tags,
     } = this.props;
+    if (isFetching) {
+      return <Loader />
+    }
     return (
       <div className="App">
         <Select.Async
@@ -145,7 +150,7 @@ class App extends Component {
 const mapStateToProps = (state, ownProps) => {
   return ({
     posts: state.posts.posts,
-    isFetching: state.post.isFetching,
+    isFetching: state.posts.isFetching,
     tags: state.tags,
   })
 };
