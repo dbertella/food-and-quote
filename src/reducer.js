@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { default as ActionTypes } from './actions';
 
 const initialPosts = {
   isFetching: false,
@@ -8,12 +9,12 @@ const initialPosts = {
 const posts = (state = initialPosts, action) => {
   console.log({[action.type]: action})
   switch (action.type) {
-    case 'POSTS_REQUESTED':
+    case ActionTypes.POSTS_REQUESTED:
       return {
         ...state,
         isFetching: true,
       };
-    case 'POSTS_RECEIVED':
+    case ActionTypes.POSTS_RECEIVED:
       return {
         ...state,
         isFetching: false,
@@ -30,12 +31,12 @@ const initialPost = {
 
 const post = (state = initialPost, action) => {
   switch (action.type) {
-    case 'POST_REQUESTED':
+    case ActionTypes.POST_REQUESTED:
       return {
         ...state,
         isFetching: true,
       };
-    case 'POST_RECEIVED':
+    case ActionTypes.POST_RECEIVED:
       return {
         ...state,
         isFetching: false,
@@ -46,7 +47,17 @@ const post = (state = initialPost, action) => {
   }
 };
 
+const tags = (state = [], action) => {
+  switch (action.type) {
+    case ActionTypes.HANDLE_TAGS:
+      return action.tags;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   posts,
   post,
+  tags
 });

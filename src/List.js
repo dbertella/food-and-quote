@@ -36,38 +36,26 @@ class App extends Component {
     };
   }
   componentDidMount() {
-    const value = localStorage.getItem('value');
-    if (value) {
-      this.setState({
-        value: JSON.parse(value),
-      })
-    }
-    this.fetchFirstTenTags();
-  }
-  componentWillUpdate(nextProps, nextState) {
-    const { value } = nextState;
-    const { requestPosts } = this.props;
-    if (value.length > 0 && value.length !== this.state.value.length) {
-      requestPosts(value);
+    const { tags } = this.props;
+    if (tags.length === 0) {
+      this.fetchFirstTenTags();
     }
   }
 
-  onChange = (value) => {
-		this.setState({
-			value: value,
-		});
-    localStorage.setItem('value', JSON.stringify(value));
-	};
-  setValue = (value) => {
-    this.setState({
-			value: [
-        ...this.state.value,
-        value,
-      ],
-		});
-    localStorage.setItem('value', JSON.stringify(value));
+  componentWillUpdate(nextProps) {
+    const { tags } = nextProps;
+    const { requestPosts } = this.props;
+    if (tags.length > 0 && tags.length !== this.props.tags.length) {
+      return requestPosts(tags);
+    }
+    this.fetchFirstTenTags();
   }
-  fetchFirstTenTags = () => 
+
+  onChange = (value) => this.props.handleTags(value);
+
+  setValue = (value) => this.props.handleTags([value]);
+
+  fetchFirstTenTags = () =>
     fetch(`${BASE_URL}tags?per_page=7&order=desc&orderby=count`)
       .then(r => r.json())
       .then(res => {
@@ -94,18 +82,18 @@ class App extends Component {
   };
   render() {
     const {
-      value,
       homeTags,
     } = this.state;
     const {
-      posts
+      posts,
+      tags,
     } = this.props;
     return (
       <div className="App">
         <Select.Async
           autofocus
           multi
-          value={value}
+          value={tags}
           name="form-field-name"
           loadOptions={this.fetchTags}
           onChange={this.onChange}
@@ -113,7 +101,7 @@ class App extends Component {
         />
         <div className="container">
           {
-            value.length > 0
+            tags.length > 0
               ? posts.map((p, i) => (
                   <h2 key={i}>
                     <Link
@@ -158,10 +146,12 @@ const mapStateToProps = (state, ownProps) => {
   return ({
     posts: state.posts.posts,
     isFetching: state.post.isFetching,
+    tags: state.tags,
   })
 };
 
 export default connect(
   mapStateToProps, {
   requestPosts: actions.requestPosts,
+  handleTags: actions.handleTags,
 })(App);
