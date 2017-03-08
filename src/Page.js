@@ -58,7 +58,10 @@ class Page extends Component {
         <BackButton onClick={goBack} />
         <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
       </TitleWrap>
-      <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
+      {
+        post.featured_image &&
+        <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
+      }
       <div dangerouslySetInnerHTML={createMarkup(post.content)} />
       </div>
     )

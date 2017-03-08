@@ -71,11 +71,9 @@ class App extends Component {
     if (!input) {
 			return Promise.resolve({ options: [] });
 		}
-    console.log(input)
     return fetch(`${BASE_URL}tags?fields=name%2C%20slug&number=50&search=${input}`)
       .then(r => r.json())
       .then(res => {
-        console.log({res: res.tags})
         const options = res.tags.map(tag => ({
           value: tag.slug,
           label: tag.name

@@ -36,7 +36,6 @@ const sortPosts = (posts, tags) => {
   return posts.slice().sort((a, b) => {
     var tagALength = tags.filter(tag => a.tags[tag.value]).length;
     var tagBLength = tags.filter(tag => b.tags[tag.value]).length;
-    console.log(tags, tagBLength)
     if (tagALength > tagBLength) {
       return -1;
     }
