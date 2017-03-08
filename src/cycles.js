@@ -5,6 +5,14 @@ import * as actions from './actions';
 import { default as ActionTypes } from './actions';
 import { BASE_URL } from './utils';
 
+const CATEGORIES_FILTER = [
+  'starter',
+  'side-dish',
+  'main-course',
+  'dessert',
+  'how-to',
+];
+
 const fetchPostById = (sources) => {
   const postSlug$ = sources.ACTION
     .filter(action => action.type === ActionTypes.POST_REQUESTED)
@@ -48,10 +56,11 @@ const fetchPosts = (sources) => {
   const tags$ = sources.ACTION
     .filter(action => action.type === ActionTypes.POSTS_REQUESTED)
     .map(action => action.tags);
-
   const request$ = tags$
     .map(tags => ({
-      url: `${BASE_URL}posts?tag=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
+      url: `${BASE_URL}posts?`
+        + `category=${encodeURIComponent(CATEGORIES_FILTER.join())}`
+        + `&tag=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
       category: 'posts'
     }))
 
