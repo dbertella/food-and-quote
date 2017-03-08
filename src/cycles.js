@@ -1,6 +1,5 @@
 import { combineCycles } from 'redux-cycles';
 import sampleCombine from 'xstream/extra/sampleCombine';
-import { intersection } from 'lodash';
 
 import * as actions from './actions';
 import { default as ActionTypes } from './actions';
@@ -31,7 +30,6 @@ const fetchPostById = (sources) => {
   }
 }
 
-// TODO refactor using xs
 const sortPosts = (posts, tags) => {
   return posts.slice().sort((a, b) => {
     var tagALength = tags.filter(tag => a.tags[tag.value]).length;
