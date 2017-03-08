@@ -7,7 +7,7 @@ module.exports = {
   ],
   dontCacheBustUrlsMatching: /\.\w{8}\./,
   swFilePath: 'build/service-worker.js',
-  ateFallback: 'index.html',
+  navigateFallback: 'index.html',
   runtimeCaching: [{
     urlPattern: /^https:\/\/public-api\.wordpress\.com\/wp\/v2\/sites\/foodanquote\.com\/.*/,
     handler: 'networkFirst'
