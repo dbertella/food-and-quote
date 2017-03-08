@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["404.html","97039a901ee143c6e7c46ac5acd7064c"],["index.html","2684e5bc459bd752ee68d678f7b39545"],["manifest.json","472ee8c5a581ddf7d5b0a2b6b5dbc9aa"],["static/css/main.af1e7165.css","bef426e50378981a198869fd4db96ced"],["static/js/main.8e9ac982.js","9471d7a151d0191bf13335f0c6629248"]];
+var precacheConfig = [["404.html","97039a901ee143c6e7c46ac5acd7064c"],["index.html","532d5537b75bdcbae2ec9b5cb9854c58"],["manifest.json","472ee8c5a581ddf7d5b0a2b6b5dbc9aa"],["static/css/main.af1e7165.css","bef426e50378981a198869fd4db96ced"],["static/js/main.7775ce83.js","4f0c15ac151948ae1162a525ca53210c"]];
 var cacheName = 'sw-precache-v3-sw-precache-' + (self.registration ? self.registration.scope : '');
 
 
@@ -283,7 +283,7 @@ self.addEventListener('fetch', function(event) {
 
 // Runtime cache configuration, using the sw-toolbox library.
 
-toolbox.router.get(/^https:\/\/public-api\.wordpress\.com\/wp\/v2\/sites\/foodanquote\.com\/.*/, toolbox.networkFirst, {});
+toolbox.router.get(/^https:\/\/public-api\.wordpress\.com\/rest\/v1\.1\/sites\/foodanquote\.com\/.*/, toolbox.networkFirst, {});
 toolbox.router.get(/^https:\/\/foodandquote\.files\.wordpress\.com\/.*/, toolbox.fastest, {"cache":{"maxEntries":30,"name":"images"}});
 
 
