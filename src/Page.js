@@ -46,26 +46,20 @@ class Page extends Component {
     return (
       <div className="container">
         <Helmet
-          title={post.title ? post.title.rendered : post.slug}
+          title={post.title}
           meta={[
-              {name: "description", content: "3 ingredient recipes and parenting quotes"},
               {property: "og:type", content: "article"}
           ]}
           link={[
-              {rel: "canonical", href: post.link},
+              {rel: "canonical", href: post.URL},
           ]}
       />
-        {
-          post.title &&
-            <div>
-              <TitleWrap>
-                <BackButton onClick={goBack} />
-                <Title dangerouslySetInnerHTML={createMarkup(post.title.rendered)} />
-              </TitleWrap>
-              <img src={`${post.featured_media_url}?w=640&h=360&crop=1`} alt={post.title.rendered} />
-              <div dangerouslySetInnerHTML={createMarkup(post.content.rendered)} />
-            </div>
-        }
+      <TitleWrap>
+        <BackButton onClick={goBack} />
+        <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
+      </TitleWrap>
+      <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
+      <div dangerouslySetInnerHTML={createMarkup(post.content)} />
       </div>
     )
   }

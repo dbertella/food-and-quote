@@ -9,7 +9,7 @@ module.exports = {
   swFilePath: 'build/service-worker.js',
   navigateFallback: 'index.html',
   runtimeCaching: [{
-    urlPattern: /^https:\/\/public-api\.wordpress\.com\/wp\/v2\/sites\/foodanquote\.com\/.*/,
+    urlPattern: /^https:\/\/public-api\.wordpress\.com\/rest\/v1\.1\/sites\/foodanquote\.com\/.*/,
     handler: 'networkFirst'
   }, {
     urlPattern: /^https:\/\/foodandquote\.files\.wordpress\.com\/.*/,

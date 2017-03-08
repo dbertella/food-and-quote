@@ -49,7 +49,9 @@ class App extends Component {
     if (tags.length > 0 && tags.length !== this.props.tags.length) {
       return requestPosts(tags);
     }
-    this.fetchFirstTenTags();
+    if (this.state.homeTags.length === 0) {
+      this.fetchFirstTenTags();
+    }
   }
 
   onChange = (value) => this.props.handleTags(value);
@@ -57,11 +59,11 @@ class App extends Component {
   setValue = (value) => this.props.handleTags([value]);
 
   fetchFirstTenTags = () =>
-    fetch(`${BASE_URL}tags?per_page=7&order=desc&orderby=count`)
+    fetch(`${BASE_URL}tags?fields=name%2C%20slug&number=10&order=DESC&order_by=count`)
       .then(r => r.json())
       .then(res => {
         this.setState({
-          homeTags: res,
+          homeTags: res.tags,
         })
       });
 
@@ -69,11 +71,13 @@ class App extends Component {
     if (!input) {
 			return Promise.resolve({ options: [] });
 		}
-    return fetch(`${BASE_URL}tags?per_page=100&search=${input}`)
+    console.log(input)
+    return fetch(`${BASE_URL}tags?fields=name%2C%20slug&number=50&search=${input}`)
       .then(r => r.json())
       .then(res => {
-        const options = res.map(tag => ({
-          value: tag.id.toString(),
+        console.log({res: res.tags})
+        const options = res.tags.map(tag => ({
+          value: tag.slug,
           label: tag.name
         }))
         return {
@@ -110,11 +114,11 @@ class App extends Component {
               ? posts.map((p, i) => (
                   <h2 key={i}>
                     <Link
-                      to={`/${p.id}`}
+                      to={`/${p.slug}`}
                       className="cards"
-                      style={{ backgroundImage: `url(${p.featured_media_url}?w=640&h=640&crop=1)`}}
+                      style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
                     >
-                      <span className="title" dangerouslySetInnerHTML={createMarkup(p.title.rendered)} />
+                      <span className="title" dangerouslySetInnerHTML={createMarkup(p.title)} />
                     </Link>
                   </h2>
                 ))
@@ -123,13 +127,13 @@ class App extends Component {
                   <TagWrap>
                     {
                       homeTags.map(
-                        (tag, i) => 
+                        (tag, i) =>
                         <InitialTag
                           key={i}
                           className="Select-value-label"
                           onClick={
                             () => this.setValue({
-                              value: tag.id.toString(),
+                              value: tag.slug,
                               label: tag.name
                             })
                           }

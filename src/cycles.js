@@ -3,17 +3,17 @@ import sampleCombine from 'xstream/extra/sampleCombine';
 import { intersection } from 'lodash';
 
 import * as actions from './actions';
-import * as ActionTypes from './constants';
+import { default as ActionTypes } from './actions';
 import { BASE_URL } from './utils';
 
 const fetchPostById = (sources) => {
-  const postIds$ = sources.ACTION
+  const postSlug$ = sources.ACTION
     .filter(action => action.type === ActionTypes.POST_REQUESTED)
     .map(action => action.postId);
 
-  const request$ = postIds$
-    .map(postId => ({
-      url: `${BASE_URL}posts/${postId}`,
+  const request$ = postSlug$
+    .map(postSlug => ({
+      url: `${BASE_URL}posts/slug:${postSlug}`,
       category: 'post'
     }));
 
@@ -22,8 +22,8 @@ const fetchPostById = (sources) => {
     .flatten();
 
   const action$ = response$
-    .compose(sampleCombine(postIds$))
-    .map(([ response, postIds ]) => actions.receivePostById(postIds, response.body))
+    .compose(sampleCombine(postSlug$))
+    .map(([ response, postSlug ]) => actions.receivePostById(postSlug, response.body))
 
   return {
     ACTION: action$,
@@ -34,12 +34,9 @@ const fetchPostById = (sources) => {
 // TODO refactor using xs
 const sortPosts = (posts, tags) => {
   return posts.slice().sort((a, b) => {
-    var tagALength = intersection(
-      a.tags.map(el => el.toString()),
-      tags.map(el => el.value)).length;
-    var tagBLength = intersection(
-      b.tags.map(el => el.toString()),
-      tags.map(el => el.value)).length;
+    var tagALength = tags.filter(tag => a.tags[tag.value]).length;
+    var tagBLength = tags.filter(tag => b.tags[tag.value]).length;
+    console.log(tags, tagBLength)
     if (tagALength > tagBLength) {
       return -1;
     }
@@ -57,7 +54,7 @@ const fetchPosts = (sources) => {
 
   const request$ = tags$
     .map(tags => ({
-      url: `${BASE_URL}posts?per_page=100&tags=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
+      url: `${BASE_URL}posts?tag=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
       category: 'posts'
     }))
 
@@ -67,7 +64,7 @@ const fetchPosts = (sources) => {
 
   const action$ = response$
     .compose(sampleCombine(tags$))
-    .map(([ response, tags ]) => actions.receivePosts(sortPosts(response.body, tags)));
+    .map(([ response, tags ]) => actions.receivePosts(sortPosts(response.body.posts, tags)));
 
   return {
     ACTION: action$,
