@@ -5,14 +5,22 @@ import {
 } from "react-router-dom";
 import Helmet from "react-helmet";
 import styled from "styled-components";
-
 import List from "./List";
 import Page from "./Page";
+import Search from "./Search";
 import "./App.css";
+import logo from './img/icon.png';
 
 const Title = styled(Link)`
   color: #fff;
   text-decoration: none;
+  padding: 20px;
+`;
+const AppHeader = styled.div`
+  display: flex;
+  alignItems: center;
+  background-color: #222;
+  padding: 20px;
 `;
 const App = () => (
   <div className="App">
@@ -29,12 +37,14 @@ const App = () => (
             {rel: "canonical", href: "https://foodandquote.com"},
         ]}
     />
-    <div className="App-header">
+    <AppHeader>
+      <img src={logo} alt="Food and quote logo" />
       <h1><Title to="/">Food and Quote</Title></h1>
-    </div>
+    </AppHeader>
     <div>
-      <Route exact path="/" component={List}/>
-      <Route path="/:id" component={Page}/>
+      <Route exact path="/" component={Search} />
+      <Route path="/s" component={List} />
+      <Route path="/recipe/:id" component={Page} />
     </div>
   </div>
 );
