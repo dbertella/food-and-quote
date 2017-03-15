@@ -63,14 +63,18 @@ const fetchPosts = (sources) => {
         + `&tag=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
       category: 'posts'
     }))
-
+debugger;
   const response$ = sources.HTTP
     .select('posts')
     .flatten();
 
   const action$ = response$
     .compose(sampleCombine(tags$))
-    .map(([ response, tags ]) => actions.receivePosts(sortPosts(response.body.posts, tags)));
+    .map(([ response, tags ]) => {
+
+      const posts = tags.length ? sortPosts(response.body.posts, tags) : response.body.posts;
+      return actions.receivePosts(posts);
+    });
 
   return {
     ACTION: action$,

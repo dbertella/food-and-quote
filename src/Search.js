@@ -48,10 +48,8 @@ class App extends Component {
     };
   }
   componentDidMount() {
-    const { tags } = this.props;
-    if (tags.length === 0) {
-      this.fetchFirstTenTags();
-    }
+    const { tags, requestPosts } = this.props;
+    requestPosts([])
   }
 
   componentWillUpdate(nextProps) {
@@ -60,23 +58,11 @@ class App extends Component {
     if (tags.length > 0 && tags.length !== this.props.tags.length) {
       return requestPosts(tags);
     }
-    if (this.state.homeTags.length === 0) {
-      this.fetchFirstTenTags();
-    }
   }
 
   onChange = (value) => this.props.handleTags(value);
 
   setValue = (value) => this.props.handleTags([value]);
-
-  fetchFirstTenTags = () =>
-    fetch(`${BASE_URL}tags?fields=name%2C%20slug&number=10&order=DESC&order_by=count`)
-      .then(r => r.json())
-      .then(res => {
-        this.setState({
-          homeTags: res.tags,
-        })
-      });
 
   fetchTags = (input) => {
     if (!input) {
@@ -110,36 +96,25 @@ class App extends Component {
           multi
           value={tags}
           name="form-field-name"
-          placeholder={'Type in your ingredients'}
+          placeholder={'Egg, courgette, potato...'}
           loadOptions={this.fetchTags}
           onChange={this.onChange}
           onValueClick={this.gotoUser}
         />
         <div className="container">
-          <div className="pad-1">
-            <TagWrap>
-              <HungryButton to={`/s?tags=${urlParam}`}>I'm Hungry</HungryButton>
-            </TagWrap>
-            <TagWrap>
-              {
-                homeTags.map(
-                  (tag, i) =>
-                  <InitialTag
-                    key={i}
-                    className="Select-value-label"
-                    onClick={
-                      () => this.setValue({
-                        value: tag.slug,
-                        label: tag.name
-                      })
-                    }
+          {
+            posts.map((p, i) => (
+                <h2 key={i}>
+                  <Link
+                    to={`/recipe/${p.slug}`}
+                    className="cards"
+                    style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
                   >
-                    {tag.name}
-                  </InitialTag>
-                )
-              }
-            </TagWrap>
-          </div>
+                    <span className="title" dangerouslySetInnerHTML={createMarkup(p.title)} />
+                  </Link>
+                </h2>
+              ))
+          }
         </div>
       </div>
     );
