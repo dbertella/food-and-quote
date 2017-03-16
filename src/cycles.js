@@ -56,6 +56,7 @@ const fetchPosts = (sources) => {
   const tags$ = sources.ACTION
     .filter(action => action.type === ActionTypes.POSTS_REQUESTED)
     .map(action => action.tags);
+
   const request$ = tags$
     .map(tags => ({
       url: `${BASE_URL}posts?`
@@ -63,7 +64,7 @@ const fetchPosts = (sources) => {
         + `&tag=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
       category: 'posts'
     }))
-debugger;
+
   const response$ = sources.HTTP
     .select('posts')
     .flatten();

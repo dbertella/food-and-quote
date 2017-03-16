@@ -49,13 +49,13 @@ class App extends Component {
   }
   componentDidMount() {
     const { tags, requestPosts } = this.props;
-    requestPosts([])
+    requestPosts(tags)
   }
 
   componentWillUpdate(nextProps) {
     const { tags } = nextProps;
     const { requestPosts } = this.props;
-    if (tags.length > 0 && tags.length !== this.props.tags.length) {
+    if (tags.length !== this.props.tags.length) {
       return requestPosts(tags);
     }
   }

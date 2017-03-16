@@ -11,17 +11,23 @@ import Search from "./Search";
 import "./App.css";
 import logo from './img/icon.png';
 
-const Title = styled(Link)`
-  color: #fff;
-  text-decoration: none;
-  padding: 20px;
+const Title = styled.h1`
+  margin: 0;
+  a {
+    color: #fff;
+    text-decoration: none;
+    padding: 20px;
+  }
 `;
 const AppHeader = styled.div`
   display: flex;
   alignItems: center;
   background-color: #222;
-  padding: 20px;
+  padding: 10px 20px;
 `;
+const Logo = styled.img`
+  width: 36px;
+`
 const App = () => (
   <div className="App">
       <Helmet
@@ -38,8 +44,8 @@ const App = () => (
         ]}
     />
     <AppHeader>
-      <img src={logo} alt="Food and quote logo" />
-      <h1><Title to="/">Food and Quote</Title></h1>
+      <Logo src={logo} alt="Food and quote logo"  />
+      <Title><Link to="/">Food and Quote</Link></Title>
     </AppHeader>
     <div>
       <Route exact path="/" component={Search} />
