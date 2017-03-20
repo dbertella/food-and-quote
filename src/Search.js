@@ -5,11 +5,12 @@ import {
 } from 'react-router-dom';
 import Select from 'react-select';
 import styled from 'styled-components';
-import * as actions from './actions';
 
+import * as actions from './actions';
 import Loader from './components/Loader';
 import { BASE_URL, createMarkup } from './utils';
 import 'react-select/dist/react-select.css';
+import List from './List';
 
 const InitialTag = styled.button`
   font-size: 1.2em;
@@ -40,12 +41,8 @@ const HungryButton = styled(Link)`
 `;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: [],
-      homeTags: [],
-    };
+  state = {
+    value: [],
   }
   componentDidMount() {
     const { tags, requestPosts } = this.props;
@@ -63,6 +60,11 @@ class App extends Component {
   onChange = (value) => this.props.handleTags(value);
 
   setValue = (value) => this.props.handleTags([value]);
+
+  loadMore = (page) => {
+    const { tags, requestPosts } = this.props;
+    requestPosts(tags, page)
+  };
 
   fetchTags = (input) => {
     if (!input) {
@@ -87,12 +89,13 @@ class App extends Component {
     const {
       isFetching,
       posts,
+      count,
       tags,
     } = this.props;
     const urlParam = tags.map(tag => tag.value).join();
     return (
-      <div className="App">
-        <Select.Async
+      <div>
+        {/*<Select.Async
           multi
           value={tags}
           name="form-field-name"
@@ -100,22 +103,11 @@ class App extends Component {
           loadOptions={this.fetchTags}
           onChange={this.onChange}
           onValueClick={this.gotoUser}
-        />
-        <div className="container">
-          {
-            posts.map((p, i) => (
-                <h2 key={i}>
-                  <Link
-                    to={`/recipe/${p.slug}`}
-                    className="cards"
-                    style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
-                  >
-                    <span className="title" dangerouslySetInnerHTML={createMarkup(p.title)} />
-                  </Link>
-                </h2>
-              ))
-          }
-        </div>
+        />*/}
+        {
+          count > 0 &&
+            <List posts={posts} count={count} loadMore={this.loadMore} />
+        }
       </div>
     );
   }
@@ -124,6 +116,7 @@ class App extends Component {
 const mapStateToProps = (state, ownProps) => {
   return ({
     posts: state.posts.posts,
+    count: state.posts.count,
     tags: state.tags,
   })
 };

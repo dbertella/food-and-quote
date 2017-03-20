@@ -18,7 +18,11 @@ const posts = (state = initialPosts, action) => {
       return {
         ...state,
         isFetching: false,
-        posts: action.posts,
+        posts: [
+          ...state.posts,
+          ...action.posts
+        ],
+        count: action.count,
       };
     default:
       return state;

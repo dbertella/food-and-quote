@@ -1,20 +1,22 @@
 *, :after, :before {
     box-sizing: border-box;
 }
-
-.container {
-  max-width: 640px;
-  width: 98%;
-  margin: 0 auto;
-  overflow-x: hidden;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
 }
+
 h2 {
   text-align: center;
 }
+
 img {
   max-width: 100%;
   height: auto;
 }
+
 .Select-control {
   border-radius: 0;
   height: 46px;
@@ -67,17 +69,4 @@ img {
 .pad-1 {
   padding: 1em 0;
 }
-.cards {
-  display: flex;
-  align-items: flex-end;
-  min-height: 230px;
-  text-decoration: none;
-  background-size: cover;
-  background-position: center center;
-}
-.title {
-  width: 100%;
-  padding: 0.5em;
-  color: #fff;
-  background: rgba(0,0,0, 0.3);
-}
+

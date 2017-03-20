@@ -1,0 +1,9 @@
+exports[`test Title renders correctly 1`] = `
+<h1
+  className="cflcSu" />
+`;
+
+exports[`test TitleWrap renders correctly 1`] = `
+<div
+  className="dqUvXD" />
+`;

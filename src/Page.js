@@ -5,18 +5,20 @@ import Helmet from "react-helmet";
 import styled from "styled-components";
 
 import BackButton from './components/BackButton';
+import Container from './components/Container';
 import Loader from './components/Loader';
 import * as actions from './actions';
 import { createMarkup } from './utils';
 import { TEXT_COLOR } from './styles';
 import type { Post } from './types';
 
-const TitleWrap = styled.div`
+export const TitleWrap = styled.div`
   display: flex;
   align-items: center;
 `;
-const Title = styled.h1`
+export const Title = styled.h1`
   color: ${TEXT_COLOR};
+  font-size: 17px;
 `;
 
 class Page extends Component {
@@ -25,8 +27,9 @@ class Page extends Component {
     match: Object,
     requestPostById: Function,
     isFetching: boolean,
-    goBack: Function,
+    history: Object,
   }
+
   componentDidMount() {
     const { match, post, requestPostById } = this.props;
     if (!post.title) {
@@ -38,13 +41,13 @@ class Page extends Component {
     const {
       post,
       isFetching,
-      goBack,
+      history,
     } = this.props;
     if (isFetching) {
       return <Loader />
     }
     return (
-      <div className="container">
+      <Container>
         <Helmet
           title={post.title}
           meta={[
@@ -53,17 +56,17 @@ class Page extends Component {
           link={[
               {rel: "canonical", href: post.URL},
           ]}
-      />
-      <TitleWrap>
-        <BackButton onClick={goBack} />
-        <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
-      </TitleWrap>
-      {
-        post.featured_image &&
-        <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
-      }
-      <div dangerouslySetInnerHTML={createMarkup(post.content)} />
-      </div>
+        />
+        {
+          post.featured_image &&
+          <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
+        }
+        <TitleWrap>
+          <BackButton onClick={history.goBack} />
+          <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
+        </TitleWrap>
+        <div dangerouslySetInnerHTML={createMarkup(post.content)} />
+      </Container>
     )
   }
 }

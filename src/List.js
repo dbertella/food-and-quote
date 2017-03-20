@@ -1,88 +1,85 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import Infinite from 'react-infinite';
+import styled from 'styled-components';
+
 import {
   Link,
-  Redirect,
 } from 'react-router-dom';
-import Select from 'react-select';
-import styled from 'styled-components';
-import 'react-select/dist/react-select.css';
+import Container from './components/Container';
+import { createMarkup } from './utils';
 
-import * as actions from './actions';
-import BackButton from './components/BackButton';
-import Loader from './components/Loader';
-import { TEXT_COLOR } from './styles';
-import { BASE_URL, createMarkup } from './utils';
-
-const TitleWrap = styled.div`
+const Card = styled(Link)`
   display: flex;
-  align-items: center;
-`;
-const Title = styled.h1`
-  color: ${TEXT_COLOR};
-`;
+  align-items: flex-end;
+  min-height: 230px;
+  text-decoration: none;
+  background-size: cover;
+  background-position: center center;
+`
+
+const Title = styled.span`
+  width: 100%;
+  padding: 0.5em;
+  color: #fff;
+  background: rgba(0,0,0, 0.3);
+`
 
 class List extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: [],
-      homeTags: [],
-    };
+  state = {
+    page: 1,
+    maxPage: 1,
   }
   componentDidMount() {
-    const { tags, requestPosts } = this.props;
-    console.log('------>>>>>>', this.props)
-    if (tags.length !== 0) {
-      requestPosts(tags)
+    const { count } = this.props;
+    this.setState({
+      maxPage: Math.ceil(count / 20),
+    });
+  }
+  componentWillUpdate(nextProps) {
+    const { posts } = this.props;
+    if (posts.length !== nextProps.posts.length) {
+      this.setState({ loading: false });
     }
   }
-
-  render() {
+  handleInfiniteLoad = () => {
     const {
-      isFetching,
-      posts,
-      tags,
-      goBack,
-    } = this.props;
-
+      page,
+      maxPage,
+    } = this.state;
+    if (page < maxPage) {
+      this.setState({
+        page: this.state.page + 1,
+        loading: true,
+      }, () => this.props.loadMore(this.state.page))
+    }
+  };
+  render() {
+    const { posts, count, loadMore } = this.props;
     return (
-      <div className="App">
-        <div className="container">
-          <TitleWrap>
-            <BackButton onClick={goBack} />
-            <Title>{tags.map(tag => tag.label).join(', ')}</Title>
-          </TitleWrap>
+      <Container>
+        <Infinite
+          useWindowAsScrollContainer
+          elementHeight={260}
+          infiniteLoadBeginEdgeOffset={520}
+          onInfiniteLoad={this.handleInfiniteLoad}
+          isInfiniteLoading={this.state.loading}
+        >
           {
-            tags.length > 0
-              ? posts.map((p, i) => (
-                  <h2 key={i}>
-                    <Link
-                      to={`/recipe/${p.slug}`}
-                      className="cards"
-                      style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
-                    >
-                      <span className="title" dangerouslySetInnerHTML={createMarkup(p.title)} />
-                    </Link>
-                  </h2>
-                ))
-              : <Redirect to="/" />
-          }
-        </div>
-      </div>
-    );
+            posts.map((p, i) => (
+                <h2 key={i}>
+                  <Card
+                    to={`/recipe/${p.slug}`}
+                    style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
+                  >
+                    <Title dangerouslySetInnerHTML={createMarkup(p.title)} />
+                  </Card>
+                </h2>
+              ))
+            }
+        </Infinite>
+      </Container>
+    )
   }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  return ({
-    posts: state.posts.posts,
-    isFetching: state.posts.isFetching,
-    tags: state.tags,
-  })
 };
 
-export default connect(
-  mapStateToProps, {
-  requestPosts: actions.requestPosts,
-})(List);
+export default List;

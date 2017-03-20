@@ -9,14 +9,16 @@ const types = {
   TAGS_RECEIVED: 'TAGS_RECEIVED',
 }
 
-export const requestPosts = (tags: Array<string>) => ({
+export const requestPosts = (tags: Array<string>, page: number = 1) => ({
   type: types.POSTS_REQUESTED,
   tags,
+  page,
 });
 
-export const receivePosts = (posts: Object) => ({
+export const receivePosts = (posts: Array<Object>, count: number) => ({
   type: types.POSTS_RECEIVED,
   posts,
+  count,
 });
 
 export const requestPostById = (postId: number) => ({

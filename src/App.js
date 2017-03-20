@@ -29,7 +29,7 @@ const Logo = styled.img`
   width: 36px;
 `
 const App = () => (
-  <div className="App">
+  <div>
       <Helmet
         htmlAttributes={{lang: "en", amp: undefined}}
         titleTemplate="%s | Food and quote"
@@ -47,11 +47,9 @@ const App = () => (
       <Logo src={logo} alt="Food and quote logo"  />
       <Title><Link to="/">Food and Quote</Link></Title>
     </AppHeader>
-    <div>
-      <Route exact path="/" component={Search} />
-      <Route path="/s" component={List} />
-      <Route path="/recipe/:id" component={Page} />
-    </div>
+    <Route exact path="/" component={Search} />
+    <Route path="/s" component={List} />
+    <Route path="/recipe/:id" component={Page} />
   </div>
 );
 

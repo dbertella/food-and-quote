@@ -14,8 +14,6 @@ import rootReducer from './reducer';
 import main from './cycles';
 import App from './App';
 
-import './index.css';
-
 import {
   BrowserRouter as Router,
 } from 'react-router-dom';
@@ -23,13 +21,13 @@ import {
 const cycleMiddleware = createCycleMiddleware();
 const { makeActionDriver } = cycleMiddleware;
 
-const enhancer = persistState();
+// const enhancer = persistState();
 
 const store = createStore(
   rootReducer,
   composeWithDevTools(
     applyMiddleware(cycleMiddleware),
-    enhancer
+    // enhancer
   )
 );
 

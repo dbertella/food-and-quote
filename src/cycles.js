@@ -1,5 +1,6 @@
 import { combineCycles } from 'redux-cycles';
 import sampleCombine from 'xstream/extra/sampleCombine';
+import xs from 'xstream';
 
 import * as actions from './actions';
 import { default as ActionTypes } from './actions';
@@ -57,10 +58,15 @@ const fetchPosts = (sources) => {
     .filter(action => action.type === ActionTypes.POSTS_REQUESTED)
     .map(action => action.tags);
 
-  const request$ = tags$
-    .map(tags => ({
+  const page$ = sources.ACTION
+    .filter(action => action.type === ActionTypes.POSTS_REQUESTED)
+    .map(action => action.page);
+
+  const request$ = xs.combine(tags$, page$)
+    .map(([tags, page]) => ({
       url: `${BASE_URL}posts?`
-        + `category=${encodeURIComponent(CATEGORIES_FILTER.join())}`
+        + `page=${page}`
+        + `&category=${encodeURIComponent(CATEGORIES_FILTER.join())}`
         + `&tag=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
       category: 'posts'
     }))
@@ -74,7 +80,7 @@ const fetchPosts = (sources) => {
     .map(([ response, tags ]) => {
 
       const posts = tags.length ? sortPosts(response.body.posts, tags) : response.body.posts;
-      return actions.receivePosts(posts);
+      return actions.receivePosts(posts, response.body.found);
     });
 
   return {
