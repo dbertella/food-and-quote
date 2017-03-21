@@ -4,12 +4,24 @@ import Select from 'react-select';
 import styled from 'styled-components';
 
 import * as actions from './actions';
-import Loader from './components/Loader';
+import Logo from './components/Logo';
 import { BASE_URL, createMarkup } from './utils';
 import 'react-select/dist/react-select.css';
 import List from './List';
 
-class App extends Component {
+const Title = styled.h1`
+  margin: 0;
+  color: #fff;
+  padding: 0 20px;
+`;
+const AppHeader = styled.div`
+  display: flex;
+  alignItems: center;
+  background-color: #222;
+  padding: 10px 20px;
+`;
+
+class Search extends Component {
   state = {
     value: [],
   }
@@ -63,6 +75,10 @@ class App extends Component {
     const urlParam = tags.map(tag => tag.value).join();
     return (
       <div>
+        <AppHeader>
+          <Logo />
+          <Title>Food and Quote</Title>
+        </AppHeader>
         <Select.Async
           multi
           value={tags}
@@ -94,4 +110,4 @@ export default connect(
   mapStateToProps, {
   requestPosts: actions.requestPosts,
   handleTags: actions.handleTags,
-})(App);
+})(Search);

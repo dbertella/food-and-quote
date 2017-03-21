@@ -2,8 +2,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import { TEXT_COLOR } from '../styles';
-
 const BackButton = styled.button`
   border: 0;
   background: transparent;
@@ -14,7 +12,7 @@ const Svg = styled.svg`
   height: 3em;
 `;
 const Path = styled.path`
-  fill: ${TEXT_COLOR};
+  fill: #fff;
 `;
 
 export default ({ onClick }: {onClick: Function}) => (

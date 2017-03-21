@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from "react-helmet";
 import styled from "styled-components";
-
+import { Link } from "react-router-dom";
 import BackButton from './components/BackButton';
 import Container from './components/Container';
 import Loader from './components/Loader';
@@ -11,16 +11,20 @@ import * as actions from './actions';
 import { createMarkup } from './utils';
 import { TEXT_COLOR } from './styles';
 import type { Post } from './types';
+import Logo from './components/Logo';
 
-export const TitleWrap = styled.div`
-  display: flex;
-  align-items: center;
-`;
 export const Title = styled.h1`
   color: ${TEXT_COLOR};
   font-size: 17px;
+  text-align: center;
+  marginTop: 30px;
 `;
-
+const AppHeader = styled.div`
+  display: flex;
+  alignItems: center;
+  padding: 10px 0;
+  background-color: #222;
+`;
 class Page extends Component {
   props: {
     post: Post,
@@ -57,14 +61,15 @@ class Page extends Component {
               {rel: "canonical", href: post.URL},
           ]}
         />
+        <AppHeader>
+          <BackButton onClick={history.goBack} />
+          <Link to="/"><Logo /></Link>
+        </AppHeader>
         {
           post.featured_image &&
           <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
         }
-        <TitleWrap>
-          <BackButton onClick={history.goBack} />
-          <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
-        </TitleWrap>
+        <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
         <div dangerouslySetInnerHTML={createMarkup(post.content)} />
       </Container>
     )
