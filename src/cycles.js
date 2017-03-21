@@ -6,6 +6,8 @@ import * as actions from './actions';
 import { default as ActionTypes } from './actions';
 import { BASE_URL } from './utils';
 
+const POST_NUMBER = 20;
+
 const CATEGORIES_FILTER = [
   'starter',
   'side-dish',
@@ -41,8 +43,8 @@ const fetchPostById = (sources) => {
 
 const sortPosts = (posts, tags) => {
   return posts.slice().sort((a, b) => {
-    var tagALength = tags.filter(tag => a.tags[tag.value]).length;
-    var tagBLength = tags.filter(tag => b.tags[tag.value]).length;
+    var tagALength = tags.filter(tag => a.tags[tag]).length;
+    var tagBLength = tags.filter(tag => b.tags[tag]).length;
     if (tagALength > tagBLength) {
       return -1;
     }
@@ -66,6 +68,7 @@ const fetchPosts = (sources) => {
     .map(([tags, page]) => ({
       url: `${BASE_URL}posts?`
         + `page=${page}`
+        + `&number=${POST_NUMBER}`
         + `&category=${encodeURIComponent(CATEGORIES_FILTER.join())}`
         + `&tag=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
       category: 'posts'
@@ -76,11 +79,12 @@ const fetchPosts = (sources) => {
     .flatten();
 
   const action$ = response$
-    .compose(sampleCombine(tags$))
-    .map(([ response, tags ]) => {
-
-      const posts = tags.length ? sortPosts(response.body.posts, tags) : response.body.posts;
-      return actions.receivePosts(posts, response.body.found);
+    .compose(sampleCombine(tags$, page$))
+    .map(([ response, tags, page ]) => {
+      const maxPages = Math.ceil(response.body.found / POST_NUMBER);
+      const flattenTags = tags.map(tag => tag.value);
+      const posts = tags.length ? sortPosts(response.body.posts, flattenTags) : response.body.posts;
+      return actions.receivePosts(posts, page, maxPages, flattenTags);
     });
 
   return {

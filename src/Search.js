@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  Link,
-} from 'react-router-dom';
 import Select from 'react-select';
 import styled from 'styled-components';
 
@@ -12,48 +9,21 @@ import { BASE_URL, createMarkup } from './utils';
 import 'react-select/dist/react-select.css';
 import List from './List';
 
-const InitialTag = styled.button`
-  font-size: 1.2em;
-  line-height: 1.4;
-  background-color: #373737;
-  border-radius: 2px;
-  border: 1px solid #373737;
-  color: #fff;
-  cursor: pointer;
-  margin: 15px;
-`;
-const TagWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-flow: row wrap;
-  margin-top: 15px;
-`
-const HungryButton = styled(Link)`
-  font-size: 2em;
-  line-height: 1.4;
-  background-color: #373737;
-  border-radius: 3px;
-  color: #fff;
-  text-decoration: none;
-  cursor: pointer;
-  margin: 15px;
-  padding: 0.5em 1.5em;
-`;
-
 class App extends Component {
   state = {
     value: [],
   }
   componentDidMount() {
-    const { tags, requestPosts } = this.props;
-    requestPosts(tags)
+    const { tags, page, posts, requestPosts } = this.props;
+    if (!posts.length) {
+      requestPosts(tags, page);
+    }
   }
 
   componentWillUpdate(nextProps) {
-    const { tags } = nextProps;
-    const { requestPosts } = this.props;
-    if (tags.length !== this.props.tags.length) {
-      return requestPosts(tags);
+    const { tags, requestPosts, page } = this.props;
+    if (tags.length !== nextProps.tags.length) {
+      return requestPosts(nextProps.tags, nextProps.page);
     }
   }
 
@@ -84,18 +54,16 @@ class App extends Component {
   };
   render() {
     const {
-      homeTags,
-    } = this.state;
-    const {
       isFetching,
       posts,
-      count,
+      page,
+      maxPages,
       tags,
     } = this.props;
     const urlParam = tags.map(tag => tag.value).join();
     return (
       <div>
-        {/*<Select.Async
+        <Select.Async
           multi
           value={tags}
           name="form-field-name"
@@ -103,10 +71,10 @@ class App extends Component {
           loadOptions={this.fetchTags}
           onChange={this.onChange}
           onValueClick={this.gotoUser}
-        />*/}
+        />
         {
-          count > 0 &&
-            <List posts={posts} count={count} loadMore={this.loadMore} />
+          posts.length > 0 &&
+            <List posts={posts} page={page} maxPages={maxPages} loadMore={this.loadMore} />
         }
       </div>
     );
@@ -115,8 +83,9 @@ class App extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return ({
-    posts: state.posts.posts,
-    count: state.posts.count,
+    posts: state.posts[state.tags.map(t => t.value).join('_')] || state.posts.list,
+    maxPages: state.posts.maxPages,
+    page: state.posts.page,
     tags: state.tags,
   })
 };

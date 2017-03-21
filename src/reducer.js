@@ -3,8 +3,9 @@ import { default as ActionTypes } from './actions';
 
 const initialPosts = {
   isFetching: false,
-  posts: [],
+  list: [],
 };
+// action.tags.length ? 'list' : action.tags.join('_')
 
 const posts = (state = initialPosts, action) => {
   console.log({[action.type]: action})
@@ -15,15 +16,26 @@ const posts = (state = initialPosts, action) => {
         isFetching: true,
       };
     case ActionTypes.POSTS_RECEIVED:
-      return {
+      const newState = {
         ...state,
         isFetching: false,
-        posts: [
-          ...state.posts,
-          ...action.posts
-        ],
-        count: action.count,
-      };
+        page: action.page,
+        maxPages: action.maxPages,
+      }
+      if (action.tags.length) {
+        newState[action.tags.join('_')] = state[action.tags.join('_')]
+          ? [
+            ...state[action.tags.join('_')],
+            ...action.posts
+          ]
+          : action.posts;
+        return newState;
+      }
+      newState.list = [
+        ...state.list,
+        ...action.posts
+      ];
+      return newState;
     default:
       return state;
   }

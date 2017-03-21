@@ -15,10 +15,12 @@ export const requestPosts = (tags: Array<string>, page: number = 1) => ({
   page,
 });
 
-export const receivePosts = (posts: Array<Object>, count: number) => ({
+export const receivePosts = (posts: Array<Object>, page: number, maxPages: number, tags: Array<string>) => ({
   type: types.POSTS_RECEIVED,
   posts,
-  count,
+  page,
+  maxPages,
+  tags,
 });
 
 export const requestPostById = (postId: number) => ({

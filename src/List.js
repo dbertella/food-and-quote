@@ -26,14 +26,7 @@ const Title = styled.span`
 
 class List extends Component {
   state = {
-    page: 1,
-    maxPage: 1,
-  }
-  componentDidMount() {
-    const { count } = this.props;
-    this.setState({
-      maxPage: Math.ceil(count / 20),
-    });
+    loading: false,
   }
   componentWillUpdate(nextProps) {
     const { posts } = this.props;
@@ -42,19 +35,15 @@ class List extends Component {
     }
   }
   handleInfiniteLoad = () => {
-    const {
-      page,
-      maxPage,
-    } = this.state;
-    if (page < maxPage) {
+    const { page, maxPages, loadMore } = this.props;
+    if (page < maxPages) {
       this.setState({
-        page: this.state.page + 1,
         loading: true,
-      }, () => this.props.loadMore(this.state.page))
+      }, () => loadMore(page + 1));
     }
   };
   render() {
-    const { posts, count, loadMore } = this.props;
+    const { posts, maxPages } = this.props;
     return (
       <Container>
         <Infinite
