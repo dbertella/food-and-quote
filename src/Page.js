@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Overdrive from 'react-overdrive';
+
 import BackButton from './components/BackButton';
 import Container from './components/Container';
 import Loader from './components/Loader';
@@ -47,7 +49,7 @@ class Page extends Component {
       isFetching,
       history,
     } = this.props;
-    if (isFetching) {
+    if (!post.featured_image) {
       return <Loader />
     }
     return (
@@ -65,11 +67,13 @@ class Page extends Component {
           <BackButton onClick={history.goBack} />
           <Link to="/"><Logo /></Link>
         </AppHeader>
-        {
-          post.featured_image &&
-          <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
-        }
-        <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
+        <Overdrive id={post.slug}>
+          {
+            post.featured_image &&
+            <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
+          }
+          <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
+        </Overdrive>
         <div dangerouslySetInnerHTML={createMarkup(post.content)} />
       </Container>
     )

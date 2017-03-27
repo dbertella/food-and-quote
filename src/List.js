@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Infinite from 'react-infinite';
 import styled from 'styled-components';
+import Overdrive from 'react-overdrive';
 
 import {
   Link,
@@ -56,12 +57,14 @@ class List extends Component {
           {
             posts.map((p, i) => (
                 <h2 key={i}>
+                  <Overdrive id={p.slug}>
                   <Card
                     to={`/recipe/${p.slug}`}
                     style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
                   >
                     <Title dangerouslySetInnerHTML={createMarkup(p.title)} />
                   </Card>
+                  </Overdrive>
                 </h2>
               ))
             }

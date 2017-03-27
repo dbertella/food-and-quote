@@ -21,13 +21,13 @@ import {
 const cycleMiddleware = createCycleMiddleware();
 const { makeActionDriver } = cycleMiddleware;
 
-// const enhancer = persistState();
+const enhancer = persistState();
 
 const store = createStore(
   rootReducer,
   composeWithDevTools(
     applyMiddleware(cycleMiddleware),
-    // enhancer
+    enhancer
   )
 );
 
