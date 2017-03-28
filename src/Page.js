@@ -27,6 +27,10 @@ const AppHeader = styled.div`
   padding: 10px 0;
   background-color: #222;
 `;
+const FullScreenImg = styled.img`
+  width: 100%;
+  height: auto;
+`;
 class Page extends Component {
   props: {
     post: Post,
@@ -34,6 +38,7 @@ class Page extends Component {
     requestPostById: Function,
     isFetching: boolean,
     history: Object,
+    location: Object,
   }
 
   componentDidMount() {
@@ -41,6 +46,7 @@ class Page extends Component {
     if (!post.title) {
       requestPostById(match.params.id);
     }
+    window.scrollTo(0, 0)
   }
 
   render() {
@@ -49,11 +55,11 @@ class Page extends Component {
       isFetching,
       history,
     } = this.props;
-    if (!post.featured_image) {
-      return <Loader />
-    }
+    const width = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
     return (
-      <Container>
+      <div>
         <Helmet
           title={post.title}
           meta={[
@@ -68,14 +74,18 @@ class Page extends Component {
           <Link to="/"><Logo /></Link>
         </AppHeader>
         <Overdrive id={post.slug}>
-          {
-            post.featured_image &&
-            <img src={`${post.featured_image}?w=640&h=360&crop=1`} alt={post.title} />
-          }
-          <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
+          <div>
+            {
+              post.featured_image &&
+              <FullScreenImg src={`${post.featured_image}?w=${Math.ceil(width)}&crop=1`} alt={post.title} />
+            }
+          </div>
         </Overdrive>
-        <div dangerouslySetInnerHTML={createMarkup(post.content)} />
-      </Container>
+        <Container>
+          <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
+          <div dangerouslySetInnerHTML={createMarkup(post.content)} />
+        </Container>
+      </div>
     )
   }
 }

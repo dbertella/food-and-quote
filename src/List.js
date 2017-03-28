@@ -58,12 +58,14 @@ class List extends Component {
             posts.map((p, i) => (
                 <h2 key={i}>
                   <Overdrive id={p.slug}>
-                  <Card
-                    to={`/recipe/${p.slug}`}
-                    style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
-                  >
-                    <Title dangerouslySetInnerHTML={createMarkup(p.title)} />
-                  </Card>
+                    <div>
+                      <Card
+                        to={`/recipe/${p.slug}`}
+                        style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
+                      >
+                        <Title dangerouslySetInnerHTML={createMarkup(p.title)} />
+                      </Card>
+                    </div>
                   </Overdrive>
                 </h2>
               ))
