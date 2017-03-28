@@ -8,7 +8,7 @@ const initialPosts = {
 // action.tags.length ? 'list' : action.tags.join('_')
 
 const posts = (state = initialPosts, action) => {
-  console.log({[action.type]: action})
+  console.log(action.page, action.maxPages)
   switch (action.type) {
     case ActionTypes.POSTS_REQUESTED:
       return {
@@ -23,12 +23,17 @@ const posts = (state = initialPosts, action) => {
         maxPages: action.maxPages,
       }
       if (action.tags.length) {
-        newState[action.tags.join('_')] = state[action.tags.join('_')]
+        const joinTags = action.tags.join('_');
+        newState[joinTags] = {
+          posts: state[joinTags] !== undefined 
           ? [
-            ...state[action.tags.join('_')],
+            ...state[joinTags].posts,
             ...action.posts
           ]
-          : action.posts;
+          : action.posts,
+          page: action.page,
+          maxPages: action.maxPages,
+        }
         return newState;
       }
       newState.list = [

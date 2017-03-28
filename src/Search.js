@@ -26,16 +26,16 @@ class Search extends Component {
     value: [],
   }
   componentDidMount() {
-    const { tags, page, posts, requestPosts } = this.props;
+    const { tags, posts, requestPosts } = this.props;
     if (!posts.length) {
-      requestPosts(tags, page);
+      requestPosts(tags, 1);
     }
   }
 
   componentWillUpdate(nextProps) {
-    const { tags, requestPosts, page } = this.props;
+    const { tags, requestPosts } = this.props;
     if (tags.length !== nextProps.tags.length) {
-      return requestPosts(nextProps.tags, nextProps.page);
+      return requestPosts(nextProps.tags, 1);
     }
   }
 
@@ -72,6 +72,7 @@ class Search extends Component {
       maxPages,
       tags,
     } = this.props;
+    console.log(page, maxPages, posts.length)
     const urlParam = tags.map(tag => tag.value).join();
     return (
       <div>
@@ -98,8 +99,17 @@ class Search extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const joinTags = state.tags.map(t => t.value).join('_');
+  if (state.posts[joinTags] !== undefined) {
+    return ({
+      posts: state.posts[joinTags].posts,
+      maxPages: state.posts[joinTags].maxPages,
+      page: state.posts[joinTags].page,
+      tags: state.tags,
+    })
+  }
   return ({
-    posts: state.posts[state.tags.map(t => t.value).join('_')] || state.posts.list,
+    posts: state.posts.list,
     maxPages: state.posts.maxPages,
     page: state.posts.page,
     tags: state.tags,
