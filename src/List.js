@@ -16,13 +16,14 @@ const Card = styled(Link)`
   text-decoration: none;
   background-size: cover;
   background-position: center center;
+  margin: 0 -1em;
 `
 
 const Title = styled.span`
   width: 100%;
   padding: 0.5em;
-  color: #fff;
-  background: rgba(0,0,0, 0.3);
+  fontSize: 0.7em;
+  color: #000;
 `
 
 class List extends Component {
@@ -62,9 +63,8 @@ class List extends Component {
                       <Card
                         to={`/recipe/${p.slug}`}
                         style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
-                      >
-                        <Title dangerouslySetInnerHTML={createMarkup(p.title)} />
-                      </Card>
+                      />
+                      <Title dangerouslySetInnerHTML={createMarkup(p.title)} />
                     </div>
                   </Overdrive>
                 </h2>
