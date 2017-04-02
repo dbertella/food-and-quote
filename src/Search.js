@@ -24,11 +24,14 @@ const SubTitle = styled.h3`
   color: #fff;
   font-family: 'Sacramento', cursive;
   font-size: 1.7em;
+  @media (max-width: 350px) {
+    flex-direction: column;
+  }
 `;
 
 const AppHeader = styled.div`
   background-color: #222;
-  padding: 10px 20px;
+  padding: 10px 0;
 `;
 
 class Search extends Component {
