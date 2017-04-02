@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import * as actions from './actions';
 import Logo from './components/Logo';
+import Bigudi from './components/Bigudi';
 import { BASE_URL, createMarkup } from './utils';
 import 'react-select/dist/react-select.css';
 import List from './List';
@@ -12,11 +13,20 @@ import List from './List';
 const Title = styled.h1`
   margin: 0;
   color: #fff;
-  padding: 0 20px;
+  text-align: center;
+  font-size: 2.9em;
 `;
-const AppHeader = styled.div`
+const SubTitle = styled.h3`
   display: flex;
-  alignItems: center;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: #fff;
+  font-family: 'Sacramento', cursive;
+  font-size: 1.7em;
+`;
+
+const AppHeader = styled.div`
   background-color: #222;
   padding: 10px 20px;
 `;
@@ -77,8 +87,11 @@ class Search extends Component {
     return (
       <div>
         <AppHeader>
-          <Logo />
           <Title>Food and Quote</Title>
+          <SubTitle>
+            <Bigudi />
+            3 ingredient recipes
+          </SubTitle>
         </AppHeader>
         <Select.Async
           multi

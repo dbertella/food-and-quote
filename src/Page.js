@@ -31,6 +31,12 @@ const FullScreenImg = styled.img`
   width: 100%;
   height: auto;
 `;
+const MaxHeight = styled.div`
+  @media (min-width: 640px) {
+    max-height: 500px;
+    overflow: hidden;
+  }
+`;
 class Page extends Component {
   props: {
     post: Post,
@@ -73,14 +79,12 @@ class Page extends Component {
           <BackButton onClick={history.goBack} />
           <Link to="/"><Logo /></Link>
         </AppHeader>
-        <Overdrive id={post.slug}>
-          <div>
-            {
-              post.featured_image &&
-              <FullScreenImg src={`${post.featured_image}?w=${Math.ceil(width)}&crop=1`} alt={post.title} />
-            }
-          </div>
-        </Overdrive>
+        <MaxHeight>
+          {
+            post.featured_image &&
+            <FullScreenImg src={`${post.featured_image}?w=${Math.ceil(width)}&crop=1`} alt={post.title} />
+          }
+        </MaxHeight>
         <Container>
           <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
           <div dangerouslySetInnerHTML={createMarkup(post.content)} />

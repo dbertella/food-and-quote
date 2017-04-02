@@ -11,20 +11,21 @@ import { createMarkup } from './utils';
 
 const Card = styled(Link)`
   display: flex;
-  align-items: flex-end;
   min-height: 230px;
   text-decoration: none;
   background-size: cover;
   background-position: center center;
-  margin: 0 -1em;
-`
+  @media (max-width: 640px) {
+    margin: 0 -1em;
+  }
+`;
 
 const Title = styled.span`
   width: 100%;
   padding: 0.5em;
   fontSize: 0.7em;
   color: #000;
-`
+`;
 
 class List extends Component {
   state = {
@@ -58,15 +59,11 @@ class List extends Component {
           {
             posts.map((p, i) => (
                 <h2 key={i}>
-                  <Overdrive id={p.slug}>
-                    <div>
-                      <Card
-                        to={`/recipe/${p.slug}`}
-                        style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
-                      />
-                      <Title dangerouslySetInnerHTML={createMarkup(p.title)} />
-                    </div>
-                  </Overdrive>
+                  <Card
+                    to={`/recipe/${p.slug}`}
+                    style={{ backgroundImage: `url(${p.featured_image}?w=640&h=640&crop=1)`}}
+                  />
+                  <Title dangerouslySetInnerHTML={createMarkup(p.title)} />
                 </h2>
               ))
             }
