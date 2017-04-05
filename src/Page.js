@@ -37,6 +37,16 @@ const MaxHeight = styled.div`
     overflow: hidden;
   }
 `;
+const Footer = styled.div`
+  background: #e7e7e7;
+  padding: 2em 1em;
+  margin: 1em -1em 0;
+`;
+const Separator = styled.div`
+  height: 1px;
+  background: #e3e3e3;
+  margin: 0.5em 0;
+`;
 class Page extends Component {
   props: {
     post: Post,
@@ -64,6 +74,20 @@ class Page extends Component {
     const width = window.innerWidth
       || document.documentElement.clientWidth
       || document.body.clientWidth;
+    const tags = Object.keys(post.tags || {})
+    const postTags = tags.map((key, i) => (
+      <span key={i}>
+        {i !== 0 && ', '}
+        <a>{post.tags[key].name}</a>
+      </span>
+    ));
+    const categories = Object.keys(post.categories || {})
+    const postCategories = categories.map((key, i) => (
+      <span key={i}>
+        {i !== 0 && ', '}
+        <a>{post.categories[key].name}</a>
+      </span>
+    ));
     return (
       <div>
         <Helmet
@@ -88,6 +112,21 @@ class Page extends Component {
         <Container>
           <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
           <div dangerouslySetInnerHTML={createMarkup(post.content)} />
+          <Footer>
+            <div>
+              {
+                postCategories
+              }
+            </div>
+            <Separator />
+            <div>
+              {
+                postTags
+              }
+            </div>
+            <Separator />
+            Visit <a href="https://foodandquote.com/" target="_blank">foodandquote.com</a> for more
+          </Footer>
         </Container>
       </div>
     )

@@ -14,7 +14,7 @@ const Title = styled.h1`
   margin: 0;
   color: #fff;
   text-align: center;
-  font-size: 2.9em;
+  font-size: 2.7em;
 `;
 const SubTitle = styled.h3`
   display: flex;
@@ -23,7 +23,7 @@ const SubTitle = styled.h3`
   margin: 0;
   color: #fff;
   font-family: 'Sacramento', cursive;
-  font-size: 1.7em;
+  font-size: 1.5em;
   @media (max-width: 350px) {
     flex-direction: column;
   }
@@ -31,7 +31,7 @@ const SubTitle = styled.h3`
 
 const AppHeader = styled.div`
   background-color: #222;
-  padding: 10px 0;
+  padding: 10px;
 `;
 
 class Search extends Component {
