@@ -2,6 +2,8 @@
 const types = {
   POSTS_REQUESTED: 'POSTS_REQUESTED',
   POSTS_RECEIVED: 'POSTS_RECEIVED',
+  MORE_POSTS_REQUESTED: 'MORE_POSTS_REQUESTED',
+  MORE_POSTS_RECEIVED: 'MORE_POSTS_RECEIVED',
   POST_REQUESTED: 'POST_REQUESTED',
   POST_RECEIVED: 'POST_RECEIVED',
   HANDLE_TAGS: 'HANDLE_TAGS',
@@ -15,8 +17,22 @@ export const requestPosts = (tags: Array<string>, page: number = 1) => ({
   page,
 });
 
+export const requestMorePosts = (tags: Array<string>, page: number = 1) => ({
+  type: types.MORE_POSTS_REQUESTED,
+  tags,
+  page,
+});
+
 export const receivePosts = (posts: Array<Object>, page: number, maxPages: number, tags: Array<string>) => ({
   type: types.POSTS_RECEIVED,
+  posts,
+  page,
+  maxPages,
+  tags,
+});
+
+export const receiveMorePosts = (posts: Array<Object>, page: number, maxPages: number, tags: Array<string>) => ({
+  type: types.MORE_POSTS_RECEIVED,
   posts,
   page,
   maxPages,

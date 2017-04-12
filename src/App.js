@@ -25,7 +25,7 @@ const App = () => (
         ]}
     />
     <Route exact path="/" component={Search} />
-    <Route path="/s" component={List} />
+    <Route exact path="/:searchQuery" component={Search} />
     <Route path="/recipe/:id" component={Page} />
   </div>
 );

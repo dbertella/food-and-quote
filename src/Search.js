@@ -35,9 +35,6 @@ const AppHeader = styled.div`
 `;
 
 class Search extends Component {
-  state = {
-    value: [],
-  }
   componentDidMount() {
     const { tags, posts, requestPosts } = this.props;
     if (!posts.length) {
@@ -52,13 +49,13 @@ class Search extends Component {
     }
   }
 
-  onChange = (value) => this.props.handleTags(value);
-
-  setValue = (value) => this.props.handleTags([value]);
+  onChange = (value) => {
+    this.props.handleTags(value);
+  };
 
   loadMore = (page) => {
-    const { tags, requestPosts } = this.props;
-    requestPosts(tags, page)
+    const { tags, requestMorePosts } = this.props;
+    requestMorePosts(tags, page)
   };
 
   fetchTags = (input) => {
@@ -85,8 +82,7 @@ class Search extends Component {
       maxPages,
       tags,
     } = this.props;
-    console.log(page, maxPages, posts.length)
-    const urlParam = tags.map(tag => tag.value).join();
+    console.log(tags)
     return (
       <div>
         <AppHeader>
@@ -103,7 +99,6 @@ class Search extends Component {
           placeholder={'Egg, courgette, potato...'}
           loadOptions={this.fetchTags}
           onChange={this.onChange}
-          onValueClick={this.gotoUser}
         />
         {
           posts.length > 0 &&
@@ -115,15 +110,6 @@ class Search extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const joinTags = state.tags.map(t => t.value).join('_');
-  if (state.posts[joinTags] !== undefined) {
-    return ({
-      posts: state.posts[joinTags].posts,
-      maxPages: state.posts[joinTags].maxPages,
-      page: state.posts[joinTags].page,
-      tags: state.tags,
-    })
-  }
   return ({
     posts: state.posts.list,
     maxPages: state.posts.maxPages,
@@ -135,5 +121,6 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(
   mapStateToProps, {
   requestPosts: actions.requestPosts,
+  requestMorePosts: actions.requestMorePosts,
   handleTags: actions.handleTags,
 })(Search);

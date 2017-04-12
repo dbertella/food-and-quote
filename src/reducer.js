@@ -16,31 +16,29 @@ const posts = (state = initialPosts, action) => {
         isFetching: true,
       };
     case ActionTypes.POSTS_RECEIVED:
-      const newState = {
+      return {
         ...state,
         isFetching: false,
         page: action.page,
         maxPages: action.maxPages,
+        list: action.posts,
       }
-      if (action.tags.length) {
-        const joinTags = action.tags.join('_');
-        newState[joinTags] = {
-          posts: state[joinTags] !== undefined 
-          ? [
-            ...state[joinTags].posts,
-            ...action.posts
-          ]
-          : action.posts,
-          page: action.page,
-          maxPages: action.maxPages,
-        }
-        return newState;
+    case ActionTypes.MORE_POSTS_REQUESTED:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case ActionTypes.MORE_POSTS_RECEIVED:
+      return {
+        ...state,
+        isFetching: false,
+        page: action.page,
+        maxPages: action.maxPages,
+        list: [
+          ...state.list,
+          ...action.posts,
+        ],
       }
-      newState.list = [
-        ...state.list,
-        ...action.posts
-      ];
-      return newState;
     default:
       return state;
   }

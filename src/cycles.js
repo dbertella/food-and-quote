@@ -93,4 +93,42 @@ const fetchPosts = (sources) => {
   }
 }
 
-export default combineCycles(fetchPostById, fetchPosts);
+const fetchMorePosts = (sources) => {
+  const tags$ = sources.ACTION
+    .filter(action => action.type === ActionTypes.MORE_POSTS_REQUESTED)
+    .map(action => action.tags);
+
+  const page$ = sources.ACTION
+    .filter(action => action.type === ActionTypes.MORE_POSTS_REQUESTED)
+    .map(action => action.page);
+
+  const request$ = xs.combine(tags$, page$)
+    .map(([tags, page]) => ({
+      url: `${BASE_URL}posts?`
+        + `page=${page}`
+        + `&number=${POST_NUMBER}`
+        + `&category=${encodeURIComponent(CATEGORIES_FILTER.join())}`
+        + `&tag=${encodeURIComponent(tags.map(tag => tag.value).join())}`,
+      category: 'moreposts'
+    }))
+
+  const response$ = sources.HTTP
+    .select('moreposts')
+    .flatten();
+
+  const action$ = response$
+    .compose(sampleCombine(tags$, page$))
+    .map(([ response, tags, page ]) => {
+      const maxPages = Math.ceil(response.body.found / POST_NUMBER);
+      const flattenTags = tags.map(tag => tag.value);
+      const posts = tags.length ? sortPosts(response.body.posts, flattenTags) : response.body.posts;
+      return actions.receiveMorePosts(posts, page, maxPages, flattenTags);
+    });
+
+  return {
+    ACTION: action$,
+    HTTP: request$
+  }
+}
+
+export default combineCycles(fetchPostById, fetchPosts, fetchMorePosts);
