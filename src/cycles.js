@@ -131,4 +131,74 @@ const fetchMorePosts = (sources) => {
   }
 }
 
-export default combineCycles(fetchPostById, fetchPosts, fetchMorePosts);
+const fetchPostsByCategory = (sources) => {
+  const category$ = sources.ACTION
+    .filter(action => action.type === ActionTypes.POSTS_REQUESTED_BY_CATEGORY)
+    .map(action => action.category);
+
+  const page$ = sources.ACTION
+    .filter(action => action.type === ActionTypes.POSTS_REQUESTED_BY_CATEGORY)
+    .map(action => action.page);
+
+  const request$ = xs.combine(category$, page$)
+    .map(([category, page]) => ({
+      url: `${BASE_URL}posts?`
+        + `page=${page}`
+        + `&number=${POST_NUMBER}`
+        + `&category=${category}`,
+      category: 'posts'
+    }))
+
+  const response$ = sources.HTTP
+    .select('posts')
+    .flatten();
+
+  const action$ = response$
+    .compose(sampleCombine(category$, page$))
+    .map(([ response, category, page ]) => {
+      const maxPages = Math.ceil(response.body.found / POST_NUMBER);
+      return actions.receivePosts(response.body.posts, page, maxPages, []);
+    });
+
+  return {
+    ACTION: action$,
+    HTTP: request$
+  }
+}
+
+const fetchMorePostsByCategory = (sources) => {
+  const category$ = sources.ACTION
+    .filter(action => action.type === ActionTypes.MORE_POSTS_REQUESTED_BY_CATEGORY)
+    .map(action => action.category);
+
+  const page$ = sources.ACTION
+    .filter(action => action.type === ActionTypes.MORE_POSTS_REQUESTED_BY_CATEGORY)
+    .map(action => action.page);
+
+  const request$ = xs.combine(category$, page$)
+    .map(([category, page]) => ({
+      url: `${BASE_URL}posts?`
+        + `page=${page}`
+        + `&number=${POST_NUMBER}`
+        + `&category=${category}`,
+      category: 'moreposts'
+    }))
+
+  const response$ = sources.HTTP
+    .select('moreposts')
+    .flatten();
+
+  const action$ = response$
+    .compose(sampleCombine(category$, page$))
+    .map(([ response, category, page ]) => {
+      const maxPages = Math.ceil(response.body.found / POST_NUMBER);
+      return actions.receiveMorePosts(response.body.posts, page, maxPages, []);
+    });
+
+  return {
+    ACTION: action$,
+    HTTP: request$
+  }
+}
+
+export default combineCycles(fetchPostById, fetchPosts, fetchMorePosts, fetchPostsByCategory, fetchMorePostsByCategory);

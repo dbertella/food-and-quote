@@ -82,7 +82,7 @@ class Search extends Component {
       maxPages,
       tags,
     } = this.props;
-    console.log(tags)
+    console.log(this.props)
     return (
       <div>
         <AppHeader>

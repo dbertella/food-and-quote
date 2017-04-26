@@ -78,14 +78,14 @@ class Page extends Component {
     const postTags = tags.map((key, i) => (
       <span key={i}>
         {i !== 0 && ', '}
-        <a>{post.tags[key].name}</a>
+        <Link to={`/t/${post.tags[key].slug}`}>{post.tags[key].name}</Link>
       </span>
     ));
     const categories = Object.keys(post.categories || {})
     const postCategories = categories.map((key, i) => (
       <span key={i}>
         {i !== 0 && ', '}
-        <a>{post.categories[key].name}</a>
+        <Link to={`/c/${post.categories[key].slug}`}>{post.categories[key].name}</Link>
       </span>
     ));
     return (

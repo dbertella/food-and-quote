@@ -7,6 +7,8 @@ import styled from "styled-components";
 import List from "./List";
 import Page from "./Page";
 import Search from "./Search";
+import Tag from "./views/Tag";
+import Category from "./views/Category";
 import "./App.css";
 
 const App = () => (
@@ -25,7 +27,8 @@ const App = () => (
         ]}
     />
     <Route exact path="/" component={Search} />
-    <Route exact path="/:searchQuery" component={Search} />
+    <Route path="/t/:tag" component={Tag} />
+    <Route path="/c/:category" component={Category} />
     <Route path="/recipe/:id" component={Page} />
   </div>
 );

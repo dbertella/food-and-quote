@@ -1,8 +1,10 @@
 // @flow
 const types = {
   POSTS_REQUESTED: 'POSTS_REQUESTED',
+  POSTS_REQUESTED_BY_CATEGORY: 'POSTS_REQUESTED_BY_CATEGORY',
   POSTS_RECEIVED: 'POSTS_RECEIVED',
   MORE_POSTS_REQUESTED: 'MORE_POSTS_REQUESTED',
+  MORE_POSTS_REQUESTED_BY_CATEGORY: 'MORE_POSTS_REQUESTED_BY_CATEGORY',
   MORE_POSTS_RECEIVED: 'MORE_POSTS_RECEIVED',
   POST_REQUESTED: 'POST_REQUESTED',
   POST_RECEIVED: 'POST_RECEIVED',
@@ -20,6 +22,18 @@ export const requestPosts = (tags: Array<string>, page: number = 1) => ({
 export const requestMorePosts = (tags: Array<string>, page: number = 1) => ({
   type: types.MORE_POSTS_REQUESTED,
   tags,
+  page,
+});
+
+export const requestPostsByCategory = (category: string, page: number = 1) => ({
+  type: types.POSTS_REQUESTED_BY_CATEGORY,
+  category,
+  page,
+});
+
+export const requestMorePostsByCategory = (category: string, page: number = 1) => ({
+  type: types.MORE_POSTS_REQUESTED_BY_CATEGORY,
+  category,
   page,
 });
 
