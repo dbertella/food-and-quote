@@ -38,7 +38,7 @@ run(main, {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router basename="/food-and-quote">
+    <Router>
       <App />
     </Router>
   </Provider>,
