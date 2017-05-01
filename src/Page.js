@@ -13,6 +13,7 @@ import {
 import BackButton from './components/BackButton';
 import Container from './components/Container';
 import Loader from './components/Loader';
+import ShareIcon from './components/ShareIcon';
 import * as actions from './actions';
 import { createMarkup } from './utils';
 import { TEXT_COLOR } from './styles';
@@ -65,10 +66,18 @@ const Separator = styled.div`
 `;
 const Flex = styled.div`
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-family: 'Sacramento', cursive;
   > div {
-    margin-right: 1em;
+    margin-left: 1em;
   }
 `;
+const ShareLink = styled.a`
+  margin-left: auto;
+  margin-right: 1em;
+`;
+
 class Page extends Component {
   props: {
     post: Post,
@@ -78,7 +87,9 @@ class Page extends Component {
     history: Object,
     location: Object,
   }
-
+  state = {
+    showHeaderShare: false
+  }
   componentDidMount() {
     const { match, post, requestPostById } = this.props;
     if (!post.title) {
@@ -87,6 +98,23 @@ class Page extends Component {
     window.scrollTo(0, 0)
   }
 
+  toggleHeaderShare = () => {
+    this.setState({
+      showHeaderShare: !this.state.showHeaderShare,
+    })
+  }
+  socialShare = (showDescription) => {
+    const { post } = this.props;
+    return (
+      <Flex>
+        {showDescription && 'Share this recipe'}
+        <FacebookShareButton url={post.URL} title={post.title}><FacebookIcon size={32} round={true} /></FacebookShareButton>
+        <TwitterShareButton url={post.URL} title={post.title}><TwitterIcon size={32} round={true} /></TwitterShareButton>
+        <WhatsappShareButton url={post.URL} title={post.title}><WhatsappIcon size={32} round={true} /></WhatsappShareButton>
+        <PinterestShareButton url={post.URL} media={post.featured_image}><PinterestIcon size={32} round={true} /></PinterestShareButton>
+      </Flex>
+    )
+  };
   render() {
     const {
       post,
@@ -111,14 +139,7 @@ class Page extends Component {
         <Link to={`/c/${post.categories[key].slug}`}>{post.categories[key].name}</Link>
       </span>
     ));
-    const socialShare = (
-      <Flex>
-        <FacebookShareButton url={post.URL} title={post.title}><FacebookIcon size={32} round={true} /></FacebookShareButton>
-        <TwitterShareButton url={post.URL} title={post.title}><TwitterIcon size={32} round={true} /></TwitterShareButton>
-        <WhatsappShareButton url={post.URL} title={post.title}><WhatsappIcon size={32} round={true} /></WhatsappShareButton>
-        <PinterestShareButton url={post.URL} media={post.featured_image}><PinterestIcon size={32} round={true} /></PinterestShareButton>
-      </Flex>
-    )
+
     return (
       <div>
         <Helmet
@@ -133,6 +154,14 @@ class Page extends Component {
         <AppHeader>
           <BackButton onClick={history.goBack} />
           <Link to="/"><Logo /></Link>
+          <ShareLink onClick={this.toggleHeaderShare}>
+            
+            {
+              this.state.showHeaderShare
+                ? this.socialShare(false)
+                : <ShareIcon />
+            }
+          </ShareLink>
         </AppHeader>
         <MaxHeight>
           {
@@ -142,9 +171,8 @@ class Page extends Component {
         </MaxHeight>
         <Container>
           <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
-          {socialShare}
           <div dangerouslySetInnerHTML={createMarkup(post.content)} />
-          {socialShare}
+          {this.socialShare(true)}
           <Footer>
             <div>
               {
