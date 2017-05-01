@@ -6,11 +6,6 @@ Progressive web app, created with create-react-app and based on wp.com APIs
 yarn start
 ```
 
-## Deploy on gh-pages
-```
-yarn deploy
-```
-
 ## Deploy on now
 ```
 yarn deploy:now
