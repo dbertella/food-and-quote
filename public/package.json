@@ -1,0 +1,9 @@
+{
+  "name": "food-and-quote-now",
+  "scripts": {
+    "start": "serve ./"
+  },
+  "dependencies": {
+    "serve": "^3.1.0"
+  }
+}
