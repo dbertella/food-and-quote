@@ -5,6 +5,10 @@ import Helmet from "react-helmet";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Overdrive from 'react-overdrive';
+import {
+  ShareButtons,
+  generateShareIcon,
+} from 'react-share';
 
 import BackButton from './components/BackButton';
 import Container from './components/Container';
@@ -14,6 +18,18 @@ import { createMarkup } from './utils';
 import { TEXT_COLOR } from './styles';
 import type { Post } from './types';
 import Logo from './components/Logo';
+
+const {
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  PinterestShareButton,
+} = ShareButtons;
+
+const FacebookIcon = generateShareIcon('facebook');
+const TwitterIcon = generateShareIcon('twitter');
+const WhatsappIcon = generateShareIcon('whatsapp');
+const PinterestIcon = generateShareIcon('pinterest');
 
 export const Title = styled.h1`
   color: ${TEXT_COLOR};
@@ -47,6 +63,12 @@ const Separator = styled.div`
   background: #e3e3e3;
   margin: 0.5em 0;
 `;
+const Flex = styled.div`
+  display: flex;
+  > div {
+    margin-right: 1em;
+  }
+`;
 class Page extends Component {
   props: {
     post: Post,
@@ -71,6 +93,7 @@ class Page extends Component {
       isFetching,
       history,
     } = this.props;
+
     const width = window.innerWidth
       || document.documentElement.clientWidth
       || document.body.clientWidth;
@@ -88,6 +111,14 @@ class Page extends Component {
         <Link to={`/c/${post.categories[key].slug}`}>{post.categories[key].name}</Link>
       </span>
     ));
+    const socialShare = (
+      <Flex>
+        <FacebookShareButton url={post.URL} title={post.title}><FacebookIcon size={32} round={true} /></FacebookShareButton>
+        <TwitterShareButton url={post.URL} title={post.title}><TwitterIcon size={32} round={true} /></TwitterShareButton>
+        <WhatsappShareButton url={post.URL} title={post.title}><WhatsappIcon size={32} round={true} /></WhatsappShareButton>
+        <PinterestShareButton url={post.URL} media={post.featured_image}><PinterestIcon size={32} round={true} /></PinterestShareButton>
+      </Flex>
+    )
     return (
       <div>
         <Helmet
@@ -111,7 +142,9 @@ class Page extends Component {
         </MaxHeight>
         <Container>
           <Title dangerouslySetInnerHTML={createMarkup(post.title)} />
+          {socialShare}
           <div dangerouslySetInnerHTML={createMarkup(post.content)} />
+          {socialShare}
           <Footer>
             <div>
               {
