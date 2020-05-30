@@ -22,9 +22,6 @@ const App = () => (
             {name: "description", content: "Food and quote is a 3 ingredient recipes food blog with parenting quotes. Find easy recipes for the family and share your experience."},
             {property: "og:type", content: "article"}
         ]}
-        link={[
-            {rel: "canonical", href: "https://foodandquote.com"},
-        ]}
     />
     <Route exact path="/" component={Search} />
     <Route path="/t/:tag" component={Tag} />
